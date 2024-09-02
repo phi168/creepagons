@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvyseq3rmphjb"]
+
+[ext_resource type="Script" path="res://logic/hex_piece_logic.gd" id="1_r225y"]
+
+[node name="HexPieceLogic" type="Node"]
+script = ExtResource("1_r225y")

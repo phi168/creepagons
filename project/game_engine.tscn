@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dv1rqj0h7gqfy"]
+
+[ext_resource type="Script" path="res://logic/game_engine.gd" id="1_d21o3"]
+
+[node name="GameEngine" type="Node"]
+script = ExtResource("1_d21o3")
