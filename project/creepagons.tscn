@@ -47,6 +47,7 @@ offset_bottom = 36.0
 text = "tiles occupied = 0"
 
 [node name="Winner" type="Label" parent="."]
+visible = false
 offset_left = 407.0
 offset_top = 42.0
 offset_right = 472.0

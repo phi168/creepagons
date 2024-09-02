@@ -17,7 +17,7 @@ var adj_delta_rules = {
 	6: -1,
 }
 var num_occupied_tiles: int
-var max_occupied_tiles: int = 10
+var max_occupied_tiles: int = 60
 var num_tiles_p1 = 0
 var num_tiles_p2 = 0
 var is_game_over = false

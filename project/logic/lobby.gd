@@ -119,3 +119,7 @@ func _on_join_button_pressed():
 	multiplayer.set_multiplayer_peer(peer)
 
 	_set_status("Connecting...", true)
+
+
+func _on_offline_button_pressed():
+	_player_connected(2)
