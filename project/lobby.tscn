@@ -26,8 +26,10 @@ text = "127.0.0.1"
 
 [node name="AddressLabel" type="Label" parent="LobbyPanel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 101.0
+offset_top = 99.0
+offset_right = 168.0
+offset_bottom = 122.0
 text = "Address:"
 
 [node name="StatusOk" type="Label" parent="LobbyPanel"]
