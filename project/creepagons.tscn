@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cek4r8pfo1uhm"]
+[gd_scene load_steps=6 format=3 uid="uid://cek4r8pfo1uhm"]
 
 [ext_resource type="Script" path="res://logic/creepagons.gd" id="1_7w21x"]
 [ext_resource type="PackedScene" uid="uid://ytcphuftxiuo" path="res://tile_map.tscn" id="1_c525g"]
 [ext_resource type="PackedScene" uid="uid://dv1rqj0h7gqfy" path="res://game_engine.tscn" id="2_p5iws"]
 [ext_resource type="Script" path="res://logic/hex_piece_logic.gd" id="4_7164l"]
+[ext_resource type="PackedScene" uid="uid://cfmefnc3fyvf3" path="res://tutorial.tscn" id="5_hrby2"]
 
 [node name="Creepagons" type="Node2D"]
 script = ExtResource("1_7w21x")
@@ -53,6 +54,8 @@ offset_top = 42.0
 offset_right = 472.0
 offset_bottom = 65.0
 text = "WINNER"
+
+[node name="Tutorial" parent="." instance=ExtResource("5_hrby2")]
 
 [connection signal="cell_clicked" from="GameBoard" to="." method="_on_cell_clicked"]
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]

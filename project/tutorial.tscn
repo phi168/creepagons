@@ -1,0 +1,122 @@
+[gd_scene load_steps=9 format=3 uid="uid://cfmefnc3fyvf3"]
+
+[ext_resource type="Script" path="res://logic/tutorial_panel.gd" id="1_j3bb3"]
+[ext_resource type="Texture2D" uid="uid://dto4ttx1ny1k7" path="res://1.png" id="2_q2msp"]
+[ext_resource type="Texture2D" uid="uid://b21t2ld5ducjb" path="res://2.png" id="3_jlxwh"]
+[ext_resource type="Texture2D" uid="uid://bh1rsavexrifq" path="res://3.png" id="4_m3upx"]
+[ext_resource type="Texture2D" uid="uid://ryvjtv6alhvl" path="res://5.png" id="5_ogs65"]
+[ext_resource type="Texture2D" uid="uid://df7jfwb30sibi" path="res://6.png" id="6_02viw"]
+[ext_resource type="Texture2D" uid="uid://djhsvlu33lltn" path="res://7.png" id="7_0oqlu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bk36y"]
+bg_color = Color(0.295867, 0.295867, 0.295866, 1)
+
+[node name="Tutorial" type="Node2D"]
+
+[node name="TutorialPanel" type="Panel" parent="."]
+visible = false
+clip_children = 2
+offset_right = 695.0
+offset_bottom = 777.0
+scale = Vector2(1, 0.96)
+theme_override_styles/panel = SubResource("StyleBoxFlat_bk36y")
+script = ExtResource("1_j3bb3")
+
+[node name="1" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(554, 131)
+texture = ExtResource("2_q2msp")
+
+[node name="2" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(554, 312)
+texture = ExtResource("3_jlxwh")
+
+[node name="3" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(554, 493)
+texture = ExtResource("4_m3upx")
+
+[node name="5" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(114, 748)
+texture = ExtResource("5_ogs65")
+
+[node name="6" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(353, 726)
+texture = ExtResource("6_02viw")
+
+[node name="7" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(614, 726)
+texture = ExtResource("7_0oqlu")
+
+[node name="Label" type="Label" parent="TutorialPanel"]
+offset_left = 27.0
+offset_top = 42.0
+offset_right = 395.0
+offset_bottom = 247.0
+text = "Number of adjacent tiles give the \"health gain\" 
+which will be applied next round. 
+Here:
+1 adjacent tile gives -1 (edge tiles)
+2 adjacent tiles give +0 (bottom tile)
+3 adjacent tiles give +1 (centre tile)
+(4,5,6 tiles -> +1, 0, -1 respectively)
+
+
+"
+
+[node name="Label2" type="Label" parent="TutorialPanel"]
+offset_left = 27.0
+offset_top = 247.0
+offset_right = 485.0
+offset_bottom = 322.0
+text = "Next turn the centre tile became owned and the 
+bottom tile survied. The edgeds died. 
+If you don't do anything, both tiles will die on the
+ next turn!"
+
+[node name="Label3" type="Label" parent="TutorialPanel"]
+offset_left = 27.0
+offset_top = 380.0
+offset_right = 441.0
+offset_bottom = 455.0
+text = "On your turn, you can click on a tile to add +1 
+to the health gain of a cell. Here we clicked the 
+middle cell: -1 + 1 = 0 (so it will stay alive!)"
+
+[node name="Label4" type="Label" parent="TutorialPanel"]
+offset_left = 441.0
+offset_top = 703.0
+offset_right = 532.0
+offset_bottom = 726.0
+text = "pass turn ->"
+
+[node name="Label5" type="Label" parent="TutorialPanel"]
+offset_left = 211.0
+offset_top = 703.0
+offset_right = 264.0
+offset_bottom = 726.0
+text = "click ->"
+
+[node name="Label6" type="Label" parent="TutorialPanel"]
+offset_left = 27.0
+offset_top = 584.0
+offset_right = 622.0
+offset_bottom = 659.0
+text = "opposing player health delta's cancel each other out. Here we clicked on 
+the middle tile. The next turn nothing happend to that tile because the 
+deltas were tied."
+
+[node name="Label7" type="Label" parent="TutorialPanel"]
+offset_left = 27.0
+offset_top = 496.0
+offset_right = 441.0
+offset_bottom = 571.0
+text = "You have 3 clicks on your turn. 
+You have 0 clicks on your opponents turn!"
+
+[node name="Button" type="Button" parent="."]
+offset_left = 562.0
+offset_top = 757.0
+offset_right = 685.0
+offset_bottom = 788.0
+text = "Toggle Tutorial"
+
+[connection signal="pressed" from="Button" to="TutorialPanel" method="_on_button_pressed"]
