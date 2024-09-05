@@ -32,8 +32,11 @@ func update_tile(pos_clicked: Vector2, hex: HexPieceLogic) -> void:
 	var health = hex.health - 1
 	if health > 2: 
 		health = 2 # we can't render anything greater than 3 right now
-		
-	var tile = Vector2i(hex._owner, health + 1)
+	
+	var health_offset = 3 - hex.max_health
+	if hex._owner == 0:
+		health_offset = 1
+	var tile = Vector2i(hex._owner, health + health_offset)
 	## Update the tile visuals
 	
 	set_cell(main_layer, 
@@ -47,7 +50,18 @@ func render_game_state(grid_state: Array) -> void:
 		for y in range(grid_state[x].size()):
 			if is_in_game(Vector2i(x,y)):
 				var hex = grid_state[x][y]
-				text_labels[x][y].text = hex.rendered_text
+				var label = text_labels[x][y]
+				if hex.health_delta[1] == 0:
+					label.label_settings.font_color = Color(1,0.2 ,0.1)
+				elif hex.health_delta[2] == 0:
+					label.label_settings.font_color = Color(0, 0.7 ,0)
+				else:
+					label.label_settings.font_color = Color(0.1,0.5,0.8)
+				if hex._owner == 2:
+					label.label_settings.outline_color = Color(.8,.8,.8)
+				else:
+					label.label_settings.outline_color = Color(0,0,0)
+				label.text = hex.rendered_text
 				update_tile(Vector2(x, y), hex)
 			
 		

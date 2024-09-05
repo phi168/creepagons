@@ -47,6 +47,7 @@ position = Vector2(614, 726)
 texture = ExtResource("7_0oqlu")
 
 [node name="Label" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 27.0
 offset_top = 42.0
 offset_right = 395.0
@@ -63,6 +64,7 @@ Here:
 "
 
 [node name="Label2" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 27.0
 offset_top = 247.0
 offset_right = 485.0
@@ -73,6 +75,7 @@ If you don't do anything, both tiles will die on the
  next turn!"
 
 [node name="Label3" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 27.0
 offset_top = 380.0
 offset_right = 441.0
@@ -82,6 +85,7 @@ to the health gain of a cell. Here we clicked the
 middle cell: -1 + 1 = 0 (so it will stay alive!)"
 
 [node name="Label4" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 441.0
 offset_top = 703.0
 offset_right = 532.0
@@ -89,6 +93,7 @@ offset_bottom = 726.0
 text = "pass turn ->"
 
 [node name="Label5" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 211.0
 offset_top = 703.0
 offset_right = 264.0
@@ -96,6 +101,7 @@ offset_bottom = 726.0
 text = "click ->"
 
 [node name="Label6" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 27.0
 offset_top = 584.0
 offset_right = 622.0
@@ -105,6 +111,7 @@ the middle tile. The next turn nothing happend to that tile because the
 deltas were tied."
 
 [node name="Label7" type="Label" parent="TutorialPanel"]
+layout_mode = 0
 offset_left = 27.0
 offset_top = 496.0
 offset_right = 441.0

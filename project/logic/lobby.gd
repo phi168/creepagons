@@ -73,10 +73,14 @@ func _end_game(with_error = ""):
 	if has_node("/root/Creepagons"):
 		# Erase immediately, otherwise network might show
 		# errors (this is why we connected deferred above).
-		get_node(^"/root/Creepagons").free()
+		var creepagons = get_node("/root/Creepagons")
+		 # Disconnect signals
+		creepagons.game_finished.disconnect(_end_game)
+		# Free the instance
+		creepagons.queue_free()
 		show()
 
-	multiplayer.set_multiplayer_peer(null) # Remove peer.
+	#multiplayer.set_multiplayer_peer(null) # Remove peer.
 	host_button.set_disabled(false)
 	join_button.set_disabled(false)
 

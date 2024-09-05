@@ -47,6 +47,14 @@ offset_right = 447.0
 offset_bottom = 36.0
 text = "tiles occupied = 0"
 
+[node name="AdjcencyLabel" type="Label" parent="."]
+offset_left = 33.0
+offset_top = 593.0
+offset_right = 186.0
+offset_bottom = 616.0
+text = "Adjacency rules:
+"
+
 [node name="Winner" type="Label" parent="."]
 visible = false
 offset_left = 407.0

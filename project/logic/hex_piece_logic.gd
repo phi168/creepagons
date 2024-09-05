@@ -5,7 +5,7 @@ class_name HexPieceLogic
 
 var _owner: int = 0  # 0 means unoccupied, 1 for player 1, 2 for player 2
 var health: int = 0
-var max_health: int = 2
+var max_health: int = 1
 var health_delta := {1: 0, 2: 0}
 var rendered_text := ""
 

@@ -16,6 +16,7 @@ var moves_remaining: int = 3
 @onready var my_player_label = $MyPlayerId
 @onready var tiles_occupied_label = $TilesOccupied
 @onready var winner_label = $Winner
+@onready var adjacney_label = $AdjcencyLabel
 
 
 func _ready() -> void:
@@ -24,15 +25,16 @@ func _ready() -> void:
 	var height = tile_map.get_used_rect().size.y
 	tile_map.init_text(height, width)
 	game_engine.get_base_deltas()
+	adjacney_label.text = "Adjacency rules: %s" % game_engine.adj_delta_rules
 	tile_map.render_game_state(game_engine.grid)
 	current_player_id = 1
 	current_player_label.text = "White's turn"
-	if multiplayer.is_server():
+	if multiplayer.is_server() or not is_online:
 		my_player_id = 1
-		my_player_label.text = "playing as white"
+		my_player_label.text = "playing as white."
 	else:
 		my_player_id = 2
-		my_player_label.text = "playing as black"
+		my_player_label.text = "playing as black."
 		
 # advance turn
 func next_turn():
@@ -68,6 +70,7 @@ func process_move(pos_clicked: Vector2) -> void:
 	# Send the move to the game engine
 	var current_index = player_ids.find(current_player_id) + 1
 	moves_remaining -= 1
+	print("click recevied")
 	if game_engine.place_piece(pos_clicked.x, pos_clicked.y, current_index):
 		# Update the game state after the move
 		tile_map.render_game_state(game_engine.grid)

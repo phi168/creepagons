@@ -8,13 +8,13 @@ var height: int
 var width: int
 var grid: Array = []
 var adj_delta_rules = {
-	0: -2, 
-	1: -1, 
+	0: -1, 
+	1: 0, 
 	2: 0, 
 	3: 1, 
 	4: 1, 
 	5: 0, 
-	6: -1,
+	6: 0,
 }
 var num_occupied_tiles: int
 var max_occupied_tiles: int = 60
