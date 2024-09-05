@@ -65,7 +65,22 @@ text = "WINNER"
 
 [node name="Tutorial" parent="." instance=ExtResource("5_hrby2")]
 
+[node name="PassTurnButton" type="Button" parent="."]
+offset_left = 428.0
+offset_top = 537.0
+offset_right = 509.0
+offset_bottom = 568.0
+text = "Pass turn"
+
+[node name="MovesLeftLabel" type="Label" parent="."]
+offset_left = 39.0
+offset_top = 537.0
+offset_right = 170.0
+offset_bottom = 561.0
+text = "Moves left: 3"
+
 [connection signal="cell_clicked" from="GameBoard" to="." method="_on_cell_clicked"]
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="ExitButton" to="GameBoard" method="_on_exit_button_pressed"]
 [connection signal="game_over" from="GameEngine" to="." method="_on_game_engine_game_over"]
+[connection signal="pressed" from="PassTurnButton" to="." method="_on_pass_turn_button_pressed"]

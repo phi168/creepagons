@@ -14,6 +14,7 @@ bg_color = Color(0.295867, 0.295867, 0.295866, 1)
 [node name="Tutorial" type="Node2D"]
 
 [node name="TutorialPanel" type="Panel" parent="."]
+visible = false
 clip_children = 2
 offset_right = 695.0
 offset_bottom = 777.0
