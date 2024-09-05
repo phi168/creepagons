@@ -14,7 +14,6 @@ bg_color = Color(0.295867, 0.295867, 0.295866, 1)
 [node name="Tutorial" type="Node2D"]
 
 [node name="TutorialPanel" type="Panel" parent="."]
-visible = false
 clip_children = 2
 offset_right = 695.0
 offset_bottom = 777.0
@@ -58,7 +57,9 @@ Here:
 1 adjacent tile gives -1 (edge tiles)
 2 adjacent tiles give +0 (bottom tile)
 3 adjacent tiles give +1 (centre tile)
-(4,5,6 tiles -> +1, 0, -1 respectively)
+Note that the exact rules for number of tiles 
+-> health gain are printed below 
+board! (I am still playing around with this)
 
 
 "
@@ -66,9 +67,9 @@ Here:
 [node name="Label2" type="Label" parent="TutorialPanel"]
 layout_mode = 0
 offset_left = 27.0
-offset_top = 247.0
+offset_top = 291.667
 offset_right = 485.0
-offset_bottom = 322.0
+offset_bottom = 392.667
 text = "Next turn the centre tile became owned and the 
 bottom tile survied. The edgeds died. 
 If you don't do anything, both tiles will die on the
@@ -77,9 +78,9 @@ If you don't do anything, both tiles will die on the
 [node name="Label3" type="Label" parent="TutorialPanel"]
 layout_mode = 0
 offset_left = 27.0
-offset_top = 380.0
+offset_top = 408.333
 offset_right = 441.0
-offset_bottom = 455.0
+offset_bottom = 483.333
 text = "On your turn, you can click on a tile to add +1 
 to the health gain of a cell. Here we clicked the 
 middle cell: -1 + 1 = 0 (so it will stay alive!)"
@@ -113,9 +114,9 @@ deltas were tied."
 [node name="Label7" type="Label" parent="TutorialPanel"]
 layout_mode = 0
 offset_left = 27.0
-offset_top = 496.0
+offset_top = 509.375
 offset_right = 441.0
-offset_bottom = 571.0
+offset_bottom = 584.375
 text = "You have 3 clicks on your turn. 
 You have 0 clicks on your opponents turn!"
 
