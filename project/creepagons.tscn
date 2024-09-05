@@ -80,6 +80,7 @@ offset_bottom = 561.0
 text = "Moves left: 3"
 
 [connection signal="cell_clicked" from="GameBoard" to="." method="_on_cell_clicked"]
+[connection signal="spacebar_pressed" from="GameBoard" to="." method="_on_game_board_spacebar_pressed"]
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="ExitButton" to="GameBoard" method="_on_exit_button_pressed"]
 [connection signal="game_over" from="GameEngine" to="." method="_on_game_engine_game_over"]

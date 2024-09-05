@@ -39,6 +39,14 @@ func _ready() -> void:
 		
 # advance turn
 func next_turn():
+	# apply changes of cell ownership / hp
+	game_engine.update_game_state()
+	# calculate the next prospective deltas
+	game_engine.get_base_deltas()
+	# render the new state
+	tile_map.render_game_state(game_engine.grid)
+	tiles_occupied_label.text = "tiles occupied = %s/%s" % [game_engine.num_occupied_tiles, game_engine.max_occupied_tiles]
+
 	# we need to change the current player:
 	# find the current index
 	var current_index = player_ids.find(current_player_id)
@@ -93,11 +101,8 @@ func _on_game_engine_game_over(winner):
 	current_player_id = -1
 
 func _on_pass_turn_button_pressed():
-	# apply changes of cell ownership / hp
-	game_engine.update_game_state()
-	# calculate the next prospective deltas
-	game_engine.get_base_deltas()
-	# render the new state
-	tile_map.render_game_state(game_engine.grid)
-	tiles_occupied_label.text = "tiles occupied = %s/%s" % [game_engine.num_occupied_tiles, game_engine.max_occupied_tiles]
+	next_turn()
+
+
+func _on_game_board_spacebar_pressed():
 	next_turn()

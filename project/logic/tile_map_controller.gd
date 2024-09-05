@@ -5,6 +5,7 @@ const main_atlas_id = 1
 
 # Declare a signal for when a cell is clicked
 signal cell_clicked(pos: Vector2)
+signal spacebar_pressed()
 # Array for text overlay
 var text_labels = []
 # Dictionary to store the initial "in-game" status of tiles
@@ -27,6 +28,10 @@ func _input(event: InputEvent) -> void:
 			var surrounding_cells = get_surrounding_cells(pos_clicked)
 			# Emit a signal when a cell is clicked
 			emit_signal("cell_clicked", pos_clicked)
+	elif event is InputEventKey:
+		if event.pressed and event.keycode == KEY_SPACE:
+			emit_signal("spacebar_pressed")
+		
 
 func update_tile(pos_clicked: Vector2, hex: HexPieceLogic) -> void:
 	var health = hex.health - 1
@@ -51,9 +56,9 @@ func render_game_state(grid_state: Array) -> void:
 			if is_in_game(Vector2i(x,y)):
 				var hex = grid_state[x][y]
 				var label = text_labels[x][y]
-				if hex.health_delta[1] == 0:
+				if hex.health_delta[1] < hex.health_delta[2]:
 					label.label_settings.font_color = Color(1,0.2 ,0.1)
-				elif hex.health_delta[2] == 0:
+				elif hex.health_delta[1] > hex.health_delta[2]:
 					label.label_settings.font_color = Color(0, 0.7 ,0)
 				else:
 					label.label_settings.font_color = Color(0.1,0.5,0.8)
