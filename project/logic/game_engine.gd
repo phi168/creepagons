@@ -14,12 +14,13 @@ var adj_delta_rules = {
 	3: 1, 
 	4: 1, 
 	5: 0, 
-	6: 0,
+	6: -1,
 }
 var num_occupied_tiles: int
 var max_occupied_tiles: int = 60
-var num_tiles_p1 = 0
-var num_tiles_p2 = 0
+var handicap = 2.1
+var num_tiles_p1 = 0.0
+var num_tiles_p2 = handicap
 var is_game_over = false
 
 @onready var tilemap = get_node("../GameBoard")
@@ -62,7 +63,7 @@ func get_base_deltas():
 func update_game_state():
 	num_occupied_tiles = 0
 	num_tiles_p1 = 0
-	num_tiles_p2 = 0
+	num_tiles_p2 = handicap
 	for x in range(width):
 		for y in range(height):
 			if not tilemap.is_in_game(Vector2i(x,y)):

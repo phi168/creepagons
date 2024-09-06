@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxmsging1qv8q"]
+[gd_scene load_steps=4 format=3 uid="uid://bxmsging1qv8q"]
 
 [ext_resource type="Script" path="res://logic/lobby.gd" id="1_emrbm"]
+[ext_resource type="Script" path="res://logic/client.gd" id="2_ixxc3"]
+[ext_resource type="Script" path="res://Server.gd" id="3_xsgfw"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -75,6 +77,12 @@ offset_top = 52.0
 offset_right = 310.0
 offset_bottom = 83.0
 text = "Play Offline"
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("2_ixxc3")
+
+[node name="Server" type="Node" parent="."]
+script = ExtResource("3_xsgfw")
 
 [connection signal="pressed" from="LobbyPanel/JoinButton" to="LobbyPanel" method="_on_join_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/HostButton" to="LobbyPanel" method="_on_host_button_pressed"]

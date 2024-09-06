@@ -18,6 +18,7 @@ var moves_remaining: int = 3
 @onready var winner_label = $Winner
 @onready var adjacney_label = $AdjcencyLabel
 @onready var moves_left_label = $MovesLeftLabel
+@onready var points_label = $PointsLabel
 
 
 func _ready() -> void:
@@ -45,7 +46,8 @@ func next_turn():
 	game_engine.get_base_deltas()
 	# render the new state
 	tile_map.render_game_state(game_engine.grid)
-	tiles_occupied_label.text = "tiles occupied = %s/%s" % [game_engine.num_occupied_tiles, game_engine.max_occupied_tiles]
+	points_label.text = "points: %s/%s (w/b)" % [game_engine.num_tiles_p1, game_engine.num_tiles_p2]
+	tiles_occupied_label.text = "tiles occupied: %s/%s" % [game_engine.num_occupied_tiles, game_engine.max_occupied_tiles]
 
 	# we need to change the current player:
 	# find the current index
@@ -96,7 +98,7 @@ func _on_exit_button_pressed():
 
 func _on_game_engine_game_over(winner):
 	winner_label.visible = true
-	winner_label.text = "winner is player %s (%s/%s w/b)" % [winner, game_engine.num_tiles_p1, game_engine.num_tiles_p2]
+	winner_label.text = "winner is player %s" % winner
 	# block further moves
 	current_player_id = -1
 
