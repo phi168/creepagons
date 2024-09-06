@@ -56,6 +56,7 @@ text = "Adjacency rules:
 "
 
 [node name="Winner" type="Label" parent="."]
+visible = false
 offset_left = 481.0
 offset_top = 80.0
 offset_right = 546.0
