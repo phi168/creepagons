@@ -1,12 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfmefnc3fyvf3"]
+[gd_scene load_steps=5 format=3 uid="uid://cfmefnc3fyvf3"]
 
 [ext_resource type="Script" path="res://logic/tutorial_panel.gd" id="1_j3bb3"]
-[ext_resource type="Texture2D" uid="uid://dto4ttx1ny1k7" path="res://1.png" id="2_q2msp"]
-[ext_resource type="Texture2D" uid="uid://b21t2ld5ducjb" path="res://2.png" id="3_jlxwh"]
-[ext_resource type="Texture2D" uid="uid://bh1rsavexrifq" path="res://3.png" id="4_m3upx"]
-[ext_resource type="Texture2D" uid="uid://ryvjtv6alhvl" path="res://5.png" id="5_ogs65"]
-[ext_resource type="Texture2D" uid="uid://df7jfwb30sibi" path="res://6.png" id="6_02viw"]
-[ext_resource type="Texture2D" uid="uid://djhsvlu33lltn" path="res://7.png" id="7_0oqlu"]
+[ext_resource type="PackedScene" uid="uid://ytcphuftxiuo" path="res://tile_map.tscn" id="2_jhbs6"]
+[ext_resource type="Texture2D" uid="uid://bbevilvggkuyd" path="res://arrow.png" id="9_c15tu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bk36y"]
 bg_color = Color(0.295867, 0.295867, 0.295866, 1)
@@ -14,112 +10,294 @@ bg_color = Color(0.295867, 0.295867, 0.295866, 1)
 [node name="Tutorial" type="Node2D"]
 
 [node name="TutorialPanel" type="Panel" parent="."]
-visible = false
 clip_children = 2
 offset_right = 695.0
-offset_bottom = 777.0
+offset_bottom = 840.0
 scale = Vector2(1, 0.96)
 theme_override_styles/panel = SubResource("StyleBoxFlat_bk36y")
 script = ExtResource("1_j3bb3")
 
-[node name="1" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(554, 131)
-texture = ExtResource("2_q2msp")
+[node name="Arrow" type="Sprite2D" parent="TutorialPanel"]
+self_modulate = Color(1, 0.0666667, 0, 1)
+position = Vector2(540.833, 58.2917)
+rotation = 1.5708
+scale = Vector2(0.0188616, 0.0391097)
+texture = ExtResource("9_c15tu")
 
-[node name="2" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(554, 312)
-texture = ExtResource("3_jlxwh")
+[node name="Arrow2" type="Sprite2D" parent="TutorialPanel"]
+self_modulate = Color(1, 0.0666667, 0, 1)
+position = Vector2(599.833, 58.2917)
+rotation = 1.5708
+scale = Vector2(0.0188616, 0.0391097)
+texture = ExtResource("9_c15tu")
 
-[node name="3" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(554, 493)
-texture = ExtResource("4_m3upx")
+[node name="Arrow3" type="Sprite2D" parent="TutorialPanel"]
+self_modulate = Color(0.133333, 0.619608, 0.0588235, 1)
+position = Vector2(538.121, 103.59)
+rotation = -1.5708
+scale = Vector2(0.0188616, 0.0391097)
+texture = ExtResource("9_c15tu")
 
-[node name="5" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(114, 748)
-texture = ExtResource("5_ogs65")
+[node name="Arrow8" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(161, 275)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.020944)
+texture = ExtResource("9_c15tu")
 
-[node name="6" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(353, 726)
-texture = ExtResource("6_02viw")
-
-[node name="7" type="Sprite2D" parent="TutorialPanel"]
-position = Vector2(614, 726)
-texture = ExtResource("7_0oqlu")
+[node name="TileMap" parent="TutorialPanel" instance=ExtResource("2_jhbs6")]
+position = Vector2(373, 64.5833)
+scale = Vector2(0.552071, 0.552071)
+layer_0/tile_data = PackedInt32Array(196608, 65537, 2, 262144, 1, 0, 196609, 1, 0, 262145, 131073, 2, 196611, 131073, 2, 262147, 131073, 2, 4, 65537, 2, 196612, 1, 0, 262148, 65537, 2, 196613, 1, 0, 262149, 1, 0, 6, 1, 0, 8, 131073, 2, 262135, 1, 0, 327671, 1, 0, 262136, 1, 0, 327672, 1, 0, 393208, 65537, 2, 262137, 65537, 2, 327673, 65537, 2, 262140, 65537, 2, 262139, 65537, 2, 327675, 65537, 2, 393212, 65537, 2, 327677, 65537, 2, 262141, 65537, 2, 327676, 65537, 2, 262143, 65537, 2, 327679, 65537, 2, 327680, 131073, 2, 327684, 131073, 2, 524280, 1, 0, 524279, 1, 0, 589815, 1, 0, 589816, 65537, 2, 524281, 65537, 2, 589817, 65537, 2, 655352, 65537, 2, 524283, 65537, 2, 589819, 65537, 2, 655356, 65537, 2, 589821, 65537, 2, 524285, 65537, 2, 524284, 65537, 2, 458752, 65537, 2, 524287, 65537, 2, 589823, 65537, 2, 524288, 65537, 2, 589820, 1, 0, 458753, 1, 0, 458756, 1, 0, 458757, 1, 0, 524293, 1, 0, 458755, 131073, 2, 524291, 131073, 2, 589828, 131073, 2, 589824, 131073, 2, 524289, 131073, 2, 524292, 1, 0, 917496, 1, 0, 917495, 1, 0, 983031, 1, 0, 983032, 1, 0, 1048568, 1, 0, 983033, 1, 0, 917497, 1, 0, 917499, 65537, 2, 983035, 65537, 2, 1048572, 65537, 2, 983036, 65537, 2, 917501, 65537, 2, 917500, 65537, 2, 983037, 65537, 2, 917503, 1, 0, 851968, 1, 0, 851969, 1, 0, 917505, 131073, 2, 983040, 131073, 2, 917504, 131073, 2, 983039, 1, 0, 851971, 131073, 2, 917507, 131073, 2, 983044, 131073, 2, 851972, 1, 0, 851973, 1, 0, 917509, 1, 0, 1179640, 1, 0, 1179639, 1, 0, 1245175, 1, 0, 1310712, 1, 0, 1245177, 1, 0, 1179641, 1, 0, 1245176, 1, 0, 1179643, 65537, 2, 1179644, 65537, 2, 1179645, 65537, 2, 1245181, 65537, 2, 1310716, 65537, 2, 1245179, 65537, 2, 1245180, 65537, 2, 1179647, 1, 0, 1114112, 1, 0, 1114113, 1, 0, 1179649, 131073, 2, 1245184, 131073, 2, 1245183, 1, 0, 1179648, 131073, 2, 1114115, 131073, 2, 1114116, 1, 0, 1114117, 1, 0, 1179653, 1, 0, 1245188, 131073, 2, 1179651, 131073, 2, 1179652, 131073, 2, 917508, 131073, 2, 1441784, 1, 0, 1441783, 1, 0, 1507319, 1, 0, 1572856, 1, 0, 1507321, 1, 0, 1441785, 1, 0, 1507320, 65537, 2, 1441787, 65537, 2, 1507324, 65537, 2, 1441789, 65537, 2, 1507325, 65537, 2, 1441788, 65537, 2, 1507323, 65537, 2, 1572860, 65537, 2, 1376256, 1, 0, 1441791, 1, 0, 1507327, 1, 0, 1507328, 131073, 2, 1441793, 131073, 2, 1376257, 1, 0, 1441792, 1, 0, 1376259, 131073, 2, 1376260, 1, 0, 1376261, 1, 0, 1441797, 1, 0, 1507332, 131073, 2, 1441795, 131073, 2, 1441796, 131073, 2)
 
 [node name="Label" type="Label" parent="TutorialPanel"]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 42.0
-offset_right = 395.0
-offset_bottom = 247.0
-text = "Number of adjacent tiles give the \"health gain\" 
-which will be applied next round. 
-Here:
-1 adjacent tile gives -1 (edge tiles)
-2 adjacent tiles give +0 (bottom tile)
-3 adjacent tiles give +1 (centre tile)
-Note that the exact rules for number of tiles 
--> health gain are printed below 
-board! (I am still playing around with this)
-
+offset_left = 19.0
+offset_top = 20.0
+offset_right = 554.0
+offset_bottom = 95.0
+text = "1. Cells can be dead (0 health, beige) or alive
+ (1 health, white or black)
 
 "
 
 [node name="Label2" type="Label" parent="TutorialPanel"]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 291.667
-offset_right = 485.0
-offset_bottom = 392.667
-text = "Next turn the centre tile became owned and the 
-bottom tile survied. The edgeds died. 
-If you don't do anything, both tiles will die on the
- next turn!"
+offset_left = 24.0
+offset_top = 86.4583
+offset_right = 454.0
+offset_bottom = 343.458
+text = "2. For every cell, the number of adjacent alive tiles 
+ give the \"health gain\" which will be applied next round. 
+owned neighbours -> health gain:
+0 -> 0
+1 -> 0
+2 -> 0
+3 -> 1
+4 -> 1
+5 -> 0
+6 -> -1"
+
+[node name="Label13" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.655897, 0, 0.277473, 1)
+layout_mode = 0
+offset_left = 395.0
+offset_top = 200.0
+offset_right = 419.0
+offset_bottom = 225.0
+scale = Vector2(0.673547, 0.704318)
+text = "+0"
+
+[node name="Label12" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.655897, 0, 0.277473, 1)
+layout_mode = 0
+offset_left = 499.0
+offset_top = 198.958
+offset_right = 523.0
+offset_bottom = 223.958
+text = "+1"
+
+[node name="Label11" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+layout_mode = 0
+offset_left = 379.0
+offset_top = 200.0
+offset_right = 403.0
+offset_bottom = 225.0
+scale = Vector2(0.695277, 0.695277)
+text = "+1 "
+
+[node name="Label10" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+layout_mode = 0
+offset_left = 268.0
+offset_top = 198.958
+offset_right = 292.0
+offset_bottom = 223.958
+text = "-1"
 
 [node name="Label3" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
 layout_mode = 0
-offset_left = 27.0
-offset_top = 408.333
-offset_right = 441.0
-offset_bottom = 483.333
-text = "On your turn, you can click on a tile to add +1 
-to the health gain of a cell. Here we clicked the 
-middle cell: -1 + 1 = 0 (so it will stay alive!)"
-
-[node name="Label4" type="Label" parent="TutorialPanel"]
-layout_mode = 0
-offset_left = 441.0
-offset_top = 703.0
-offset_right = 532.0
-offset_bottom = 726.0
-text = "pass turn ->"
-
-[node name="Label5" type="Label" parent="TutorialPanel"]
-layout_mode = 0
-offset_left = 211.0
-offset_top = 703.0
-offset_right = 264.0
-offset_bottom = 726.0
-text = "click ->"
-
-[node name="Label6" type="Label" parent="TutorialPanel"]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 584.0
-offset_right = 622.0
-offset_bottom = 659.0
-text = "opposing player health delta's cancel each other out. Here we clicked on 
-the middle tile. The next turn nothing happend to that tile because the 
-deltas were tied."
+offset_left = 151.0
+offset_top = 197.916
+offset_right = 175.0
+offset_bottom = 222.916
+text = "+1"
 
 [node name="Label7" type="Label" parent="TutorialPanel"]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 509.375
-offset_right = 441.0
-offset_bottom = 584.375
-text = "You have 3 clicks on your turn. 
+offset_left = 22.0
+offset_top = 409.375
+offset_right = 609.0
+offset_bottom = 484.375
+text = "3. You can click on a cell to add 1 health gain. You have 2 clicks on your turn. 
 You have 0 clicks on your opponents turn!"
+
+[node name="Label9" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.184314, 0.619608, 0.00784314, 1)
+layout_mode = 0
+offset_left = 518.0
+offset_top = 115.625
+offset_right = 652.0
+offset_bottom = 164.625
+scale = Vector2(0.857937, 0.857937)
+text = "white health gain"
+
+[node name="Label8" type="Label" parent="TutorialPanel"]
+self_modulate = Color(1, 0, 0, 1)
+layout_mode = 0
+offset_left = 518.0
+offset_top = 21.875
+offset_right = 650.0
+offset_bottom = 44.875
+scale = Vector2(0.857937, 0.857937)
+text = "black health gain"
+
+[node name="Arrow4" type="Sprite2D" parent="TutorialPanel"]
+self_modulate = Color(0.133333, 0.619608, 0.0588235, 1)
+position = Vector2(597.121, 102.486)
+rotation = -1.5708
+scale = Vector2(0.0181071, 0.0391097)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow5" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(277, 273.958)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow6" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(392, 275)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow7" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(509, 273.958)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow9" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(160.486, 595.252)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.020944)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow10" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(276.486, 594.21)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow11" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(391.486, 595.252)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow12" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(508.486, 594.21)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow13" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(160.486, 724.419)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.020944)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow14" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(276.486, 723.377)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow15" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(391.486, 724.419)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Arrow16" type="Sprite2D" parent="TutorialPanel"]
+position = Vector2(508.486, 723.377)
+rotation = 3.14159
+scale = Vector2(0.0181071, 0.0201062)
+texture = ExtResource("9_c15tu")
+
+[node name="Label4" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+offset_left = 149.0
+offset_top = 647.917
+offset_right = 173.0
+offset_bottom = 672.917
+text = "+1"
+
+[node name="Label6" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+offset_left = 381.0
+offset_top = 645.833
+offset_right = 405.0
+offset_bottom = 670.833
+text = "+1"
+
+[node name="Label5" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+offset_left = 151.0
+offset_top = 197.916
+offset_right = 175.0
+offset_bottom = 222.916
+text = "+1"
+
+[node name="Label14" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+offset_left = 267.0
+offset_top = 516.667
+offset_right = 291.0
+offset_bottom = 541.667
+text = "-1"
+
+[node name="Label15" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.655897, 0, 0.277473, 1)
+offset_left = 495.0
+offset_top = 518.75
+offset_right = 519.0
+offset_bottom = 543.75
+text = "+1"
+
+[node name="Label16" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.655897, 0, 0.277473, 1)
+offset_left = 510.0
+offset_top = 648.958
+offset_right = 534.0
+offset_bottom = 673.958
+scale = Vector2(0.673547, 0.704318)
+text = "+1
+"
+
+[node name="Label17" type="Label" parent="TutorialPanel"]
+self_modulate = Color(0.141176, 0.423529, 0, 1)
+offset_left = 494.0
+offset_top = 648.958
+offset_right = 518.0
+offset_bottom = 673.958
+scale = Vector2(0.695277, 0.695277)
+text = "+1 "
+
+[node name="Label18" type="Label" parent="TutorialPanel"]
+offset_left = 6.0
+offset_top = 578.125
+offset_right = 169.0
+offset_bottom = 601.125
+text = "click on middle tile"
+
+[node name="Label19" type="Label" parent="TutorialPanel"]
+offset_left = 30.0
+offset_top = 712.5
+offset_right = 127.0
+offset_bottom = 740.5
+text = "pass turn"
 
 [node name="Button" type="Button" parent="."]
 offset_left = 562.0

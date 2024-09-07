@@ -2,12 +2,13 @@ extends Node2D
 
 signal game_finished()
 
+const max_num_moves := 2
 # Player state variables
 var current_player_id: int
 var player_ids: Array = [1, 2]
 var my_player_id: int
 var is_online: bool = false
-var moves_remaining: int = 3
+var moves_remaining: int = max_num_moves
 
 # Reference to the nodes
 @onready var tile_map = $GameBoard
@@ -55,7 +56,7 @@ func next_turn():
 	current_player_id = player_ids[(current_index + 1) % 2]
 	var id_to_str = {1: 'white', 2: 'black'}
 	current_player_label.text = "%s's turn" % id_to_str[current_player_id]
-	moves_remaining = 3
+	moves_remaining = max_num_moves
 	moves_left_label.text = "Moves left: %s" % moves_remaining
 	#rpc("send_current_player", current_player_id)
 	# if we are not online, we still, the the player changes here:

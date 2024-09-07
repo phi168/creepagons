@@ -8,7 +8,7 @@ var height: int
 var width: int
 var grid: Array = []
 var adj_delta_rules = {
-	0: -1, 
+	0: 0, 
 	1: 0, 
 	2: 0, 
 	3: 1, 

@@ -56,9 +56,9 @@ func render_game_state(grid_state: Array) -> void:
 			if is_in_game(Vector2i(x,y)):
 				var hex = grid_state[x][y]
 				var label = text_labels[x][y]
-				if hex.health_delta[1] < hex.health_delta[2]:
+				if hex.health_delta[1] == 0:
 					label.label_settings.font_color = Color(1,0.2 ,0.1)
-				elif hex.health_delta[1] > hex.health_delta[2]:
+				elif hex.health_delta[2] == 0:
 					label.label_settings.font_color = Color(0, 0.7 ,0)
 				else:
 					label.label_settings.font_color = Color(0.1,0.5,0.8)

@@ -75,7 +75,7 @@ offset_left = 39.0
 offset_top = 537.0
 offset_right = 170.0
 offset_bottom = 561.0
-text = "Moves left: 3"
+text = "Moves left: 2"
 
 [node name="PointsLabel" type="Label" parent="."]
 offset_left = 407.0
