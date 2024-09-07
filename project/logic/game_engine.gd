@@ -18,7 +18,7 @@ var adj_delta_rules = {
 }
 var num_occupied_tiles: int
 var max_occupied_tiles: int = 60
-var handicap = 3.1
+const handicap = 2.1
 var num_tiles_p1 = 0.0
 var num_tiles_p2 = handicap
 var is_game_over = false

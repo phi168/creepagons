@@ -40,6 +40,7 @@ func _ready() -> void:
 		my_player_label.text = "playing as black."
 		
 # advance turn
+@rpc("any_peer", "call_local")
 func next_turn():
 	# apply changes of cell ownership / hp
 	game_engine.update_game_state()
@@ -104,8 +105,8 @@ func _on_game_engine_game_over(winner):
 	current_player_id = -1
 
 func _on_pass_turn_button_pressed():
-	next_turn()
+	rpc("next_turn")
 
 
 func _on_game_board_spacebar_pressed():
-	next_turn()
+	rpc("next_turn")

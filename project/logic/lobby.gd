@@ -1,19 +1,18 @@
 extends Control
 
-# Default game server port. Can be any number between 1024 and 49151.
-# Not present on the list of registered or common ports as of December 2022:
-# https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
-const DEFAULT_PORT = 8910
+const DEF_PORT = 8080
+const PROTO_NAME = "ludus"
 
-
-# Server instance
-var peer: ENetMultiplayerPeer
+var peer := WebSocketMultiplayerPeer.new()
 
 @onready var address = $Address
 @onready var host_button = $HostButton
 @onready var join_button = $JoinButton
 @onready var status_ok = $StatusOk
 @onready var status_fail = $StatusFail
+
+func _init() -> void:
+	peer.supported_protocols = ["ludus"]
 
 func _ready():
 	# Connect all the callbacks related to networking.
@@ -98,29 +97,33 @@ func _set_status(text, isok):
 
 
 func _on_host_button_pressed():
-	peer = ENetMultiplayerPeer.new()
-	var err = peer.create_server(DEFAULT_PORT, 1) # Maximum of 1 peer, since it's a 2-player game.
+	multiplayer.multiplayer_peer = null
+	var err = peer.create_server(DEF_PORT)
+	multiplayer.multiplayer_peer = peer
+	 # Maximum of 1 peer, since it's a 2-player game.
 	if err != OK:
 		# Is another server running?
 		_set_status("Can't host, address in use.",false)
 		return
-	peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 
-	multiplayer.set_multiplayer_peer(peer)
+	#multiplayer.set_multiplayer_peer(peer)
 	host_button.set_disabled(true)
 	join_button.set_disabled(true)
 	_set_status("Waiting for player...", true)
 
 
 func _on_join_button_pressed():
+	multiplayer.multiplayer_peer = null
 	var ip = address.get_text()
 	if not ip.is_valid_ip_address():
 		_set_status("IP address is invalid.", false)
 		return
-	peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, DEFAULT_PORT)
-	peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
-	multiplayer.set_multiplayer_peer(peer)
+	var err = peer.create_client("ws://" + str(ip) + ":" + str(DEF_PORT))
+	if err != OK:
+		_set_status("Can't create client", false)
+		return
+	
+	multiplayer.multiplayer_peer = peer
 
 	_set_status("Connecting...", true)
 

@@ -1,8 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxmsging1qv8q"]
+[gd_scene load_steps=2 format=3 uid="uid://bxmsging1qv8q"]
 
 [ext_resource type="Script" path="res://logic/lobby.gd" id="1_emrbm"]
-[ext_resource type="Script" path="res://logic/client.gd" id="2_ixxc3"]
-[ext_resource type="Script" path="res://Server.gd" id="3_xsgfw"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -19,7 +17,6 @@ offset_bottom = 272.0
 script = ExtResource("1_emrbm")
 
 [node name="Address" type="LineEdit" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
 offset_left = 99.0
 offset_top = 122.0
@@ -28,7 +25,6 @@ offset_bottom = 153.0
 text = "127.0.0.1"
 
 [node name="AddressLabel" type="Label" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
 offset_left = 101.0
 offset_top = 99.0
@@ -37,23 +33,20 @@ offset_bottom = 122.0
 text = "Address:"
 
 [node name="StatusOk" type="Label" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
-offset_left = 95.0
-offset_top = 87.0
-offset_right = 149.0
-offset_bottom = 110.0
+offset_left = 115.0
+offset_top = 191.0
+offset_right = 169.0
+offset_bottom = 214.0
 
 [node name="StatusFail" type="Label" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
-offset_left = 101.0
-offset_top = 89.0
-offset_right = 141.0
-offset_bottom = 112.0
+offset_left = 112.0
+offset_top = 182.0
+offset_right = 152.0
+offset_bottom = 205.0
 
 [node name="JoinButton" type="Button" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
 offset_left = 32.0
 offset_top = 121.0
@@ -62,7 +55,6 @@ offset_bottom = 152.0
 text = "Join"
 
 [node name="HostButton" type="Button" parent="LobbyPanel"]
-visible = false
 layout_mode = 0
 offset_left = 44.0
 offset_top = 80.0
@@ -72,17 +64,11 @@ text = "Host"
 
 [node name="OfflineButton" type="Button" parent="LobbyPanel"]
 layout_mode = 0
-offset_left = 213.0
-offset_top = 52.0
-offset_right = 310.0
-offset_bottom = 83.0
+offset_left = 46.0
+offset_top = 39.0
+offset_right = 143.0
+offset_bottom = 70.0
 text = "Play Offline"
-
-[node name="Client" type="Node" parent="."]
-script = ExtResource("2_ixxc3")
-
-[node name="Server" type="Node" parent="."]
-script = ExtResource("3_xsgfw")
 
 [connection signal="pressed" from="LobbyPanel/JoinButton" to="LobbyPanel" method="_on_join_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/HostButton" to="LobbyPanel" method="_on_host_button_pressed"]
