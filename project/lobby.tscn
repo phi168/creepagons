@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxmsging1qv8q"]
+[gd_scene load_steps=3 format=3 uid="uid://bxmsging1qv8q"]
 
 [ext_resource type="Script" path="res://logic/lobby.gd" id="1_emrbm"]
+[ext_resource type="PackedScene" uid="uid://cek4r8pfo1uhm" path="res://creepagons.tscn" id="2_6ma0i"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -70,6 +71,18 @@ offset_right = 143.0
 offset_bottom = 70.0
 text = "Play Offline"
 
+[node name="UsernNameLabel" type="LineEdit" parent="LobbyPanel"]
+layout_mode = 0
+offset_left = 218.0
+offset_top = 122.0
+offset_right = 285.063
+offset_bottom = 153.0
+text = "abc"
+
+[node name="Creepagons" parent="." instance=ExtResource("2_6ma0i")]
+visible = false
+
 [connection signal="pressed" from="LobbyPanel/JoinButton" to="LobbyPanel" method="_on_join_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/HostButton" to="LobbyPanel" method="_on_host_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/OfflineButton" to="LobbyPanel" method="_on_offline_button_pressed"]
+[connection signal="game_finished" from="Creepagons" to="LobbyPanel" method="_end_game"]

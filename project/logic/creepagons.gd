@@ -32,7 +32,16 @@ func _ready() -> void:
 	tile_map.render_game_state(game_engine.grid)
 	current_player_id = 1
 	current_player_label.text = "White's turn"
-	if multiplayer.is_server() or not is_online:
+	if not is_online:
+		my_player_id = 1
+		my_player_label.text = "playing as white."
+	else:
+		my_player_id = -1
+		my_player_label.text = "playing as unknown"
+
+func set_starting_player(player_id):
+	is_online = len(multiplayer.get_peers()) > 0
+	if multiplayer.get_unique_id() == player_id or player_id == -1:
 		my_player_id = 1
 		my_player_label.text = "playing as white."
 	else:
@@ -40,8 +49,9 @@ func _ready() -> void:
 		my_player_label.text = "playing as black."
 		
 # advance turn
-@rpc("any_peer", "call_local")
+@rpc("authority", "call_local")
 func next_turn():
+	print(my_player_id)
 	# apply changes of cell ownership / hp
 	game_engine.update_game_state()
 	# calculate the next prospective deltas
@@ -68,6 +78,8 @@ func next_turn():
 	print("It is now player %d's turn" % current_player_id)
 	
 func _on_cell_clicked(pos_clicked: Vector2) -> void:
+	if not visible:
+		return
 	# ignore if not my turn
 	if not my_player_id == current_player_id:
 		print("Not my turn")
@@ -80,9 +92,16 @@ func _on_cell_clicked(pos_clicked: Vector2) -> void:
 		print("No moves left -> please pass Turn")
 		return
 	# broadcast click to all players
+	if is_online:
+		rpc_id(1, "send_move", pos_clicked)
+	else:
+		process_move(pos_clicked)
+
+@rpc("any_peer")
+func send_move(pos_clicked):
 	rpc("process_move", pos_clicked)
 
-@rpc("any_peer", "call_local")
+@rpc("authority", "call_local")
 func process_move(pos_clicked: Vector2) -> void:
 	# Send the move to the game engine
 	var current_index = player_ids.find(current_player_id) + 1
@@ -105,8 +124,16 @@ func _on_game_engine_game_over(winner):
 	current_player_id = -1
 
 func _on_pass_turn_button_pressed():
-	rpc("next_turn")
+	if is_online:
+		rpc_id(1, "send_next_turn")
+	else: 
+		next_turn()
 
+@rpc("any_peer", "call_local")
+func send_next_turn():
+	#executed by server, called by client
+	rpc("next_turn")
 
 func _on_game_board_spacebar_pressed():
-	rpc("next_turn")
+	pass # disabling this because space bar already retriggers the previous button anyway
+	#rpc("next_turn")

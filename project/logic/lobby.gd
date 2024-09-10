@@ -4,15 +4,20 @@ const DEF_PORT = 8080
 const PROTO_NAME = "ludus"
 
 var peer := WebSocketMultiplayerPeer.new()
+var players := {}
+var player_order := []
 
 @onready var address = $Address
 @onready var host_button = $HostButton
 @onready var join_button = $JoinButton
 @onready var status_ok = $StatusOk
 @onready var status_fail = $StatusFail
+@onready var game = get_node("../Creepagons")
+@onready var user_name_label = $UsernNameLabel
+@onready var _self  = get_node("../LobbyPanel")
 
 func _init() -> void:
-	peer.supported_protocols = ["ludus"]
+	peer.supported_protocols = [PROTO_NAME]
 
 func _ready():
 	# Connect all the callbacks related to networking.
@@ -33,17 +38,22 @@ func _ready():
 
 # Callback from SceneTree.
 func _player_connected(connected_player_id):
-	# Someone connected, start the game!
-	# Retrieve the server's network ID.
-	var server_id = multiplayer.get_unique_id()
-	# Create a list of the player IDs (server and connected player).
-	var player_ids = [server_id, connected_player_id]
-	var game = load("res://creepagons.tscn").instantiate()
-	# Connect deferred so we can safely erase it from the callback.
-	game.game_finished.connect(_end_game, CONNECT_DEFERRED)
-	get_tree().get_root().add_child(game)
-	hide()
+	if not multiplayer.is_server():
+		return
+	if connected_player_id == -1:
+		start_game(1)
+	else:
+		rpc_id(connected_player_id, "request_user_name")
 
+	print("players: %s" % players)
+	print("num players: %s" % len(players))
+
+@rpc("authority", "call_local")
+func start_game(starting_player):
+	game.show()
+	game.set_starting_player(starting_player)
+	_self.hide()
+	
 func _player_disconnected(_id):
 	if multiplayer.is_server():
 		_end_game("Client disconnected")
@@ -69,15 +79,12 @@ func _server_disconnected():
 ##### Game creation functions ######
 
 func _end_game(with_error = ""):
-	if has_node("/root/Creepagons"):
-		# Erase immediately, otherwise network might show
-		# errors (this is why we connected deferred above).
-		var creepagons = get_node("/root/Creepagons")
-		 # Disconnect signals
-		creepagons.game_finished.disconnect(_end_game)
-		# Free the instance
-		creepagons.queue_free()
-		show()
+	print("here")
+	game.queue_free()
+	game = preload("res://creepagons.tscn").instantiate()
+	game.hide()
+	show()
+	get_tree().root.add_child(game)
 
 	#multiplayer.set_multiplayer_peer(null) # Remove peer.
 	host_button.set_disabled(false)
@@ -100,7 +107,6 @@ func _on_host_button_pressed():
 	multiplayer.multiplayer_peer = null
 	var err = peer.create_server(DEF_PORT)
 	multiplayer.multiplayer_peer = peer
-	 # Maximum of 1 peer, since it's a 2-player game.
 	if err != OK:
 		# Is another server running?
 		_set_status("Can't host, address in use.",false)
@@ -127,6 +133,21 @@ func _on_join_button_pressed():
 
 	_set_status("Connecting...", true)
 
-
+@rpc("authority")
+func request_user_name(): 
+	# called by server on client device
+	rpc_id(1, "receive_username", user_name_label.text)
+	
+@rpc("any_peer")
+func receive_username(username):
+	# called on server side by the client
+	print(username)
+	print(multiplayer.get_remote_sender_id())
+	players[multiplayer.get_remote_sender_id()] = username
+	player_order.append(multiplayer.get_remote_sender_id())
+	if len(players) == 2:
+	# Someone connected, start the game
+		rpc("start_game", player_order[0])
+	
 func _on_offline_button_pressed():
-	_player_connected(2)
+	_player_connected(-1)
