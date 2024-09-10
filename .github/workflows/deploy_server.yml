@@ -23,7 +23,7 @@ jobs:
       # Copy the subfolder to the GCE instance
       - name: Copy subfolder to GCE
         run: |
-          scp -r -o StrictHostKeyChecking=no ./build/linux/ rmaptbu@34.69.180.97:/bin/
+          scp -r -o StrictHostKeyChecking=no ./build/linux/ rmaptbu@34.69.180.97:/usr/local/bin/
 
       # Run a command on the GCE instance
       # - name: Run command on GCE instance
