@@ -21,16 +21,9 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # Copy the subfolder to the GCE instance
-      - name: Copy subfolder to GCE
+      - name: Copy files and start server
         run: |
+          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "killall /usr/local/bin/server.x86_64"
           scp -r -o StrictHostKeyChecking=no ./build/linux/*   rmaptbu@34.69.180.97:/usr/local/bin/
-
-      - name: Make the server executable
-        run: |
           ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "chmod +x /usr/local/bin/server.x86_64"
-
-
-      # Run a command on the GCE instance
-      # - name: Run command on GCE instance
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "cd /bin/ && ./your_command.sh"
+          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "nohup /usr/local/bin/server.x86_64 --headless &> /usr/local/bin/output.log &"
