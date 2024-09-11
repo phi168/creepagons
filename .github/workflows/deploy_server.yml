@@ -21,9 +21,24 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # Copy the subfolder to the GCE instance
-      - name: Copy files and start server
+      - name: Kill old process if necessary
         run: |
-          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "killall /usr/local/bin/server.x86_64"
+          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF'
+          if pgrep -x /usr/local/bin/server.x86_64 > /dev/null
+          then
+            echo "Stopping running process..."
+            pkill -f /usr/local/bin/server.x86_64  
+          else
+            echo "Process is not running."
+          fi
+          EOF
+      - name: Move files over
+        run: |
           scp -r -o StrictHostKeyChecking=no ./build/linux/*   rmaptbu@34.69.180.97:/usr/local/bin/
-          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "chmod +x /usr/local/bin/server.x86_64"
-          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 "nohup /usr/local/bin/server.x86_64 --headless &> /usr/local/bin/output.log &"
+      - name: Start server
+        run: |
+          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF' 
+          chmod +x /usr/local/bin/server.x86_64
+          nohup /usr/local/bin/server.x86_64 --headless &> /usr/local/bin/output.log &
+          echo "process restarted"
+          EOF
