@@ -20,7 +20,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Copy the subfolder to the GCE instance
+      
       - name: Kill old process if necessary
         run: |
           ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF'
@@ -32,6 +32,8 @@ jobs:
             echo "Process is not running."
           fi
           EOF
+          
+      # Copy the subfolder to the GCE instance
       - name: Move files over
         run: |
           scp -r -o StrictHostKeyChecking=no ./build/linux/*   rmaptbu@34.69.180.97:/usr/local/bin/

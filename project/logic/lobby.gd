@@ -7,7 +7,6 @@ var peer := WebSocketMultiplayerPeer.new()
 var players := {}
 var player_order := []
 
-@onready var address = $Address
 @onready var host_button = $HostButton
 @onready var join_button = $JoinButton
 @onready var status_ok = $StatusOk
@@ -15,6 +14,8 @@ var player_order := []
 @onready var game = get_node("../Creepagons")
 @onready var user_name_label = $UsernNameLabel
 @onready var _self  = get_node("../LobbyPanel")
+
+@export var ip_address := '34.69.180.97'
 
 func _init() -> void:
 	peer.supported_protocols = [PROTO_NAME]
@@ -32,7 +33,6 @@ func _ready():
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
 		_on_host_button_pressed.call_deferred()
-		_player_connected.call_deferred()
 
 #### Network callbacks from SceneTree ####
 
@@ -120,11 +120,7 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	multiplayer.multiplayer_peer = null
-	var ip = address.get_text()
-	if not ip.is_valid_ip_address():
-		_set_status("IP address is invalid.", false)
-		return
-	var err = peer.create_client("ws://" + str(ip) + ":" + str(DEF_PORT))
+	var err = peer.create_client("wss://" + ip_address + ":" + str(DEF_PORT))
 	if err != OK:
 		_set_status("Can't create client", false)
 		return
