@@ -2,6 +2,9 @@ extends Control
 
 const DEF_PORT = 8080
 const PROTO_NAME = "ludus"
+# self-sgines crt/key for local debug
+var server_certs_path = "res://cert/certificate.crt"
+var server_key_path = "res://cert/private.key"
 
 var peer := WebSocketMultiplayerPeer.new()
 var players := {}
@@ -15,20 +18,20 @@ var player_order := []
 @onready var user_name_label = $UsernNameLabel
 @onready var _self  = get_node("../LobbyPanel")
 
-@export var ip_address := "creepagonsserver.buecking.me" #'34.69.180.97'
+@export var ip_address := "localhost" # for server: '34.69.180.97'
 
 func _init() -> void:
 	peer.supported_protocols = [PROTO_NAME]
 
 func _ready():
-	if not OS.has_feature("standalone"):
-	# Running in editor or debug mode, use local IP (development)
-		print("running in debug")
-		ip_address = "localhost"  # Localhost for local development
+	if OS.has_feature("editor"):
+		print("running locally")
 	else:
 		print("running in prod")
 		# Running in exported mode, use production IP
-		ip_address = "creepagonsserver.buecking.me"  # Your production IP address
+		ip_address = "creepagonsserver.buecking.me	"
+		# if client, we need to locally load the certificate
+		server_key_path = "res://cert/fullchain1.pem"
 	# Connect all the callbacks related to networking.
 	multiplayer.peer_connected.connect(_player_connected)
 	multiplayer.peer_disconnected.connect(_player_disconnected)
@@ -40,6 +43,9 @@ func _ready():
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
+		print("using server's certificates")
+		server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
+		server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
 		_on_host_button_pressed.call_deferred()
 
 #### Network callbacks from SceneTree ####
@@ -113,19 +119,6 @@ func _set_status(text, isok):
 
 func _on_host_button_pressed():
 	multiplayer.multiplayer_peer = null
-	var server_certs_path = ""
-	var server_key_path = ""
-	# Detect the operating system
-	if OS.get_name() == "Windows":
-		# Local development (Windows)
-		print("loading from relative path")
-		server_certs_path = "res://cert/certificate.crt"
-		server_key_path = "res://cert/private.key"
-	else:
-		# Production (Linux)
-		server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
-		server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
-
 	# Load the certificate and key files
 	var server_certs_file = X509Certificate.new()
 	server_certs_file.load(server_certs_path)
@@ -154,7 +147,6 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	multiplayer.multiplayer_peer = null
-	var server_certs_path = "res://cert/certificate.crt"
 	var server_certs_file = X509Certificate.new()
 	server_certs_file.load(server_certs_path)
 	if server_certs_file:
