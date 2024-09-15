@@ -15,12 +15,20 @@ var player_order := []
 @onready var user_name_label = $UsernNameLabel
 @onready var _self  = get_node("../LobbyPanel")
 
-@export var ip_address := '34.69.180.97'
+@export var ip_address := "creepagonsserver.buecking.me" #'34.69.180.97'
 
 func _init() -> void:
 	peer.supported_protocols = [PROTO_NAME]
 
 func _ready():
+	if not OS.has_feature("standalone"):
+	# Running in editor or debug mode, use local IP (development)
+		print("running in debug")
+		ip_address = "localhost"  # Localhost for local development
+	else:
+		print("running in prod")
+		# Running in exported mode, use production IP
+		ip_address = "creepagonsserver.buecking.me"  # Your production IP address
 	# Connect all the callbacks related to networking.
 	multiplayer.peer_connected.connect(_player_connected)
 	multiplayer.peer_disconnected.connect(_player_disconnected)
@@ -105,27 +113,64 @@ func _set_status(text, isok):
 
 func _on_host_button_pressed():
 	multiplayer.multiplayer_peer = null
-	var err = peer.create_server(DEF_PORT)
-	multiplayer.multiplayer_peer = peer
-	if err != OK:
-		# Is another server running?
-		_set_status("Can't host, address in use.",false)
-		return
+	var server_certs_path = ""
+	var server_key_path = ""
+	# Detect the operating system
+	if OS.get_name() == "Windows":
+		# Local development (Windows)
+		print("loading from relative path")
+		server_certs_path = "res://cert/certificate.crt"
+		server_key_path = "res://cert/private.key"
+	else:
+		# Production (Linux)
+		server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
+		server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
 
+	# Load the certificate and key files
+	var server_certs_file = X509Certificate.new()
+	server_certs_file.load(server_certs_path)
+	var server_key_file = CryptoKey.new()
+	server_key_file.load(server_key_path, false)
+
+	if server_certs_file and server_key_file:
+		# Create the TLS options using the loaded certificate and key data
+		var tls_options = TLSOptions.server(server_key_file, server_certs_file)
+		var err = peer.create_server(DEF_PORT, '*', tls_options)
+
+		if err != OK:
+			_set_status("Can't host, address in use.",false)
+			return
+	else:
+		print("Could not load certificate or key files.")
+		return
+		
+	multiplayer.multiplayer_peer = peer
 	#multiplayer.set_multiplayer_peer(peer)
 	host_button.set_disabled(true)
 	join_button.set_disabled(true)
+	print("server live")
 	_set_status("Waiting for player...", true)
 
 
 func _on_join_button_pressed():
 	multiplayer.multiplayer_peer = null
-	var err = peer.create_client("wss://" + ip_address + ":" + str(DEF_PORT))
-	if err != OK:
-		_set_status("Can't create client", false)
+	var server_certs_path = "res://cert/certificate.crt"
+	var server_certs_file = X509Certificate.new()
+	server_certs_file.load(server_certs_path)
+	if server_certs_file:
+		var tls_options = TLSOptions.client(server_certs_file)
+		var server_endpoint = "wss://" + ip_address + ":" + str(DEF_PORT)
+		print(server_endpoint)
+		var err = peer.create_client(server_endpoint, tls_options)
+		if err != OK:
+			_set_status("Can't create client", false)
+			return
+	else: 
+		print("Could not load certificate")
 		return
 	
 	multiplayer.multiplayer_peer = peer
+	print("client created")
 
 	_set_status("Connecting...", true)
 

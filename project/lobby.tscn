@@ -16,6 +16,7 @@ offset_top = 32.0
 offset_right = 595.0
 offset_bottom = 272.0
 script = ExtResource("1_emrbm")
+ip_address = "localhost"
 
 [node name="StatusOk" type="Label" parent="LobbyPanel"]
 layout_mode = 0

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ytcphuftxiuo"]
 
-[ext_resource type="Texture2D" uid="uid://ymhpqx8i3bgt" path="res://tiles.png" id="1_tclc0"]
+[ext_resource type="Texture2D" uid="uid://ymhpqx8i3bgt" path="res://img/tiles.png" id="1_tclc0"]
 [ext_resource type="Script" path="res://logic/tile_map_controller.gd" id="2_jdg07"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_regym"]
