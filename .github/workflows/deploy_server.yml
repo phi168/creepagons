@@ -24,7 +24,7 @@ jobs:
       - name: Kill old process if necessary
         run: |
           ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF'
-          if pgrep -x /usr/local/bin/server.x86_64 > /dev/null
+          if pgrep server.x86_64 > /dev/null
           then
             echo "Stopping running process..."
             pkill -f /usr/local/bin/server.x86_64  
