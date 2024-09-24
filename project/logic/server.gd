@@ -52,19 +52,15 @@ func _player_connected(connected_player_id):
 # Called when two players join, creating a new session
 func create_game_session(peer1_id, peer2_id):
 	print("creating sessions %s, %s" % [peer1_id, peer2_id])
-	sessions[peer1_id] = peer2_id
-	sessions[peer2_id] = peer1_id
+	var session_id = str("session_", randf())
+	var session = Session.new(session_id, peer1_id, peer2_id)
+	
+	sessions[peer1_id] = session 
+	sessions[peer2_id] = session 
 
 	# Start the game for both players
 	rpc_id.call_deferred(peer1_id, "start_game", peer1_id)
 	rpc_id.call_deferred(peer2_id, "start_game", peer1_id)
-
-func look_up_sessions(id):
-	# fucntion ised by the serer_game_io to navigate 
-	# rpc calls
-	var ids = [id, sessions[id]]
-	return ids
-
 
 # RPC functions. All functions must exist on server and client
 
@@ -96,7 +92,9 @@ func _player_disconnected(player_id):
 	# end game for other player
 	if sessions.has(player_id):
 		print("stoppig session for other player")
-		var other_player_id = sessions[player_id]
+		var session = sessions[player_id]
+		var other_player_id = session.get_other_peer_id(player_id)
+		session.end_session()
 		sessions.erase(player_id)
 		sessions.erase(other_player_id)
 		rpc_id(other_player_id, "_end_game", "Client disconnected")

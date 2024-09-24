@@ -12,12 +12,11 @@ var text_labels = []
 var in_game_tiles := []
 
 
-func _ready() -> void:
+func _init() -> void:
 	in_game_tiles = get_used_cells(main_layer)
 
 
 func is_in_game(pos: Vector2i) -> bool:
-	var pos_offset = pos + get_used_rect().position
 	return pos in in_game_tiles
 
 func _input(event: InputEvent) -> void:
@@ -25,7 +24,6 @@ func _input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 			var global_clicked = event.position
 			var pos_clicked = local_to_map(to_local(global_clicked))
-			var surrounding_cells = get_surrounding_cells(pos_clicked)
 			# Emit a signal when a cell is clicked
 			emit_signal("cell_clicked", pos_clicked)
 	elif event is InputEventKey:

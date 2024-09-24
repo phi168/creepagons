@@ -20,6 +20,10 @@ var is_local: bool
 
 func _ready() -> void:
 	parse_cli()
+	var stdout = []
+	var exit_code = OS.execute("python", ["ai/cli.py", "--hello_arg='thore'"], stdout)
+	print(stdout)
+	print(exit_code)
 	host_button.pressed.connect(_on_host_button_pressed)
 	join_button.pressed.connect(_on_join_button_pressed)
 	offline_button.pressed.connect(_on_offline_button_pressed)

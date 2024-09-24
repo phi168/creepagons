@@ -19,17 +19,19 @@ var adj_delta_rules = {
 var num_occupied_tiles: int
 var max_occupied_tiles: int = 60
 const handicap = 2.1
+const max_num_moves := 2
+var moves_remaining: int = max_num_moves
 var num_tiles_p1 = 0.0
 var num_tiles_p2 = handicap
 var is_game_over = false
+var current_player_id: int = 1
+var player_ids: Array = [1, 2]
 
-@onready var tilemap = get_node("../GameBoard")
+@onready var tilemap =  preload("res://tile_map.tscn").instantiate()
 
 func _ready():
 	width = tilemap.get_used_rect().size.x
 	height = tilemap.get_used_rect().size.y
-	print(tilemap)
-
 	# Initialize a hex grid with side length 10
 	# filling matrix column by column
 	grid = []
@@ -39,9 +41,12 @@ func _ready():
 			col.append(HexPieceLogic.new())
 		grid.append(col)
 
-func place_piece(x: int, y: int, player_id: int) -> bool:
+	get_base_deltas()
+
+func place_piece(x: int, y: int) -> bool:
+	moves_remaining -= 1
 	var hex = grid[x][y]
-	hex.add_health_delta(1, player_id)
+	hex.add_health_delta(1, current_player_id)
 	return true
 	
 func get_base_deltas():
@@ -92,13 +97,24 @@ func calculate_adjacent_occupied(x: int, y: int) -> Dictionary:
 		var nx = dir[0]
 		var ny = dir[1]
 		if tilemap.is_in_game(dir):
-			var r = tilemap.get_used_rect()
 			var adj_hex = grid[nx][ny]
 			if adj_hex._owner != 0:
 				adj_occupied[adj_hex._owner] += 1
 	return adj_occupied
 
-func is_valid_move(pos_clicked, current_player_id):
+
+func next_turn():
+	# apply changes of cell ownership / hp
+	update_game_state()
+	# calculate the next prospective deltas
+	get_base_deltas()
+	# we need to change the current player:
+	# find the current index
+	var current_index = player_ids.find(current_player_id)
+	current_player_id = player_ids[(current_index + 1) % 2]
+	moves_remaining = max_num_moves
+
+func is_valid_move(pos_clicked):
 	if is_game_over:
 		return false
 	else:
