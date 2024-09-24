@@ -1,186 +1,145 @@
+# Lobby.gd
 extends Control
 
-const DEF_PORT = 8080
-const PROTO_NAME = "ludus"
-# self-sgines crt/key for local debug
-var server_certs_path = "res://cert/certificate.crt"
-var server_key_path = "res://cert/private.key"
+const PEERNAME := 'Peer' # used by client and server to ensure they have the same name in the node path
+const GAMENAME := 'Game'
 
-var peer := WebSocketMultiplayerPeer.new()
-var players := {}
-var player_order := []
+@onready var host_button = $LobbyPanel/HostButton
+@onready var join_button = $LobbyPanel/JoinButton
+@onready var offline_button = $LobbyPanel/OfflineButton
+@onready var status_ok = $LobbyPanel/StatusOk
+@onready var status_fail = $LobbyPanel/StatusFail
+@onready var user_name_label = $LobbyPanel/UsernNameLabel
+@onready var lobby_ui = $LobbyPanel
 
-@onready var host_button = $HostButton
-@onready var join_button = $JoinButton
-@onready var status_ok = $StatusOk
-@onready var status_fail = $StatusFail
-@onready var game = get_node("../Creepagons")
-@onready var user_name_label = $UsernNameLabel
-@onready var _self  = get_node("../LobbyPanel")
+@onready var server = preload("res://logic/server.gd").new()
+@onready var client = preload("res://logic/client.gd").new()
 
-@export var ip_address := "localhost" # for server: '34.69.180.97'
+var args := {}  # command line args
+var is_local: bool 
 
-func _init() -> void:
-	peer.supported_protocols = [PROTO_NAME]
+func _ready() -> void:
+	parse_cli()
+	host_button.pressed.connect(_on_host_button_pressed)
+	join_button.pressed.connect(_on_join_button_pressed)
+	offline_button.pressed.connect(_on_offline_button_pressed)
+	connect_client_signals()
+	connect_server_signals()
 
-func _ready():
-	if OS.has_feature("editor"):
+	if is_local:
 		print("running locally")
 	else:
 		print("running in prod")
 		# Running in exported mode, use production IP
-		ip_address = "creepagonsserver.buecking.me	"
+		client.ip_address = "creepagonsserver.buecking.me	"
 		# if client, we need to locally load the certificate
-		server_key_path = "res://cert/fullchain1.pem"
-	# Connect all the callbacks related to networking.
-	multiplayer.peer_connected.connect(_player_connected)
-	multiplayer.peer_disconnected.connect(_player_disconnected)
-	multiplayer.connected_to_server.connect(_connected_ok)
-	multiplayer.connection_failed.connect(_connected_fail)
-	multiplayer.server_disconnected.connect(_server_disconnected)
-	# You can save bandwidth by disabling server relay and peer notifications.
-	multiplayer.server_relay = false
-	# Automatically start the server in headless mode.
+		client.server_key_path = "res://cert/fullchain1.pem"
+
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
 		print("using server's certificates")
-		server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
-		server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
+		if not is_local:
+			server.server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
+			server.server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
 		_on_host_button_pressed.call_deferred()
 
-#### Network callbacks from SceneTree ####
+func parse_cli() -> void:
+	for arg in OS.get_cmdline_args():
+		if arg.contains("="):
+			var key_value = arg.split("=")
+			args[key_value[0].trim_prefix("--")] = key_value[1]
+		else:
+			# Options without an argument will be present in the dictionary,
+			# with the value set to an empty string.
+			args[arg.trim_prefix("--")] = ""
 
-# Callback from SceneTree.
-func _player_connected(connected_player_id):
-	if not multiplayer.is_server():
-		return
-	if connected_player_id == -1:
-		start_game(1)
-	else:
-		rpc_id(connected_player_id, "request_user_name")
+	if args.has('local') or OS.has_feature("editor"):
+		is_local = true
 
-	print("players: %s" % players)
-	print("num players: %s" % len(players))
 
-@rpc("authority", "call_local")
-func start_game(starting_player):
-	game.show()
-	game.set_starting_player(starting_player)
-	_self.hide()
-	
-func _player_disconnected(_id):
-	if multiplayer.is_server():
-		_end_game("Client disconnected")
-	else:
-		_end_game("Server disconnected")
 
-# Callback from SceneTree, only for clients (not server).
-func _connected_ok():
-	pass # This function is not needed for this project.
+func connect_server_signals() -> void:
+	server.game_started.connect(_on_game_started)
+	server.session_ended.connect(_on_session_ended)
 
-# Callback from SceneTree, only for clients (not server).
-func _connected_fail():
+func connect_client_signals() -> void:
+	client.connection_successful.connect(_on_connected_ok)
+	client.connection_failed.connect(_on_connected_fail)
+	client.disconnected_from_server.connect(_on_server_disconnected)
+	client.hide_ui.connect(hide_ui)
+	client.show_ui.connect(show_ui)
+	client.back_to_lobby.connect(remove_client)
+
+func hide_ui():
+	lobby_ui.hide()
+
+func show_ui():
+	lobby_ui.show()
+
+func _on_host_button_pressed():
+	print("Hosting server...")
+	print(server.name)
+	server.name = PEERNAME
+	server.game_name = GAMENAME
+	add_child(server, true)
+	server.start_server()
+	_set_status("Hosting server...", true)
+	host_button.set_disabled(true)
+	join_button.set_disabled(true)
+
+func _on_join_button_pressed():
+	print("Joining server...")
+	client.user_name = user_name_label.text
+	client.name = PEERNAME
+	client.game_name = GAMENAME
+	add_child(client, true)
+	client.join_server()
+	_set_status("Joining server...", true)
+	host_button.set_disabled(true)
+	join_button.set_disabled(true)
+
+func _on_offline_button_pressed():
+	print("Starting offline game...")
+	add_child(client)
+	client.start_offline_game()
+	host_button.set_disabled(true)
+	join_button.set_disabled(true)
+
+func remove_client():
+	if client and client.get_parent():  # Ensure the client exists and is part of the tree
+		client.queue_free()  # Remove the client from the scene tree
+		client = preload("res://logic/client.gd").new() # Reset the client instance
+		connect_client_signals()
+		host_button.set_disabled(false)  # Re-enable buttons when back in the lobby
+		join_button.set_disabled(false)
+
+func _on_connected_ok():
+	_set_status("Connected to server!", true)
+
+func _on_connected_fail():
 	_set_status("Couldn't connect.", false)
-
-	multiplayer.set_multiplayer_peer(null) # Remove peer.
 	host_button.set_disabled(false)
 	join_button.set_disabled(false)
 
-
-func _server_disconnected():
-	_end_game("Server disconnected.")
-
-##### Game creation functions ######
-
-func _end_game(with_error = ""):
-	print("here")
-	game.queue_free()
-	game = preload("res://creepagons.tscn").instantiate()
-	game.hide()
-	show()
-	get_tree().root.add_child(game)
-
-	#multiplayer.set_multiplayer_peer(null) # Remove peer.
+func _on_server_disconnected():
+	_set_status("Server disconnected.", false)
 	host_button.set_disabled(false)
 	join_button.set_disabled(false)
 
-	_set_status(with_error, false)
+func _on_game_started(starting_player):
+	# Transition to game scene
+	print("Game started. Starting player: ", starting_player)
+	# Trigger game start on UI
 
+func _on_session_ended():
+	# Handle session end and clean up
+	print("Session ended.")
+	_set_status("Game session ended.", false)
 
 func _set_status(text, isok):
-	# Simple way to show status.
 	if isok:
 		status_ok.set_text(text)
 		status_fail.set_text("")
 	else:
 		status_ok.set_text("")
 		status_fail.set_text(text)
-
-
-func _on_host_button_pressed():
-	multiplayer.multiplayer_peer = null
-	# Load the certificate and key files
-	var server_certs_file = X509Certificate.new()
-	server_certs_file.load(server_certs_path)
-	var server_key_file = CryptoKey.new()
-	server_key_file.load(server_key_path, false)
-
-	if server_certs_file and server_key_file:
-		# Create the TLS options using the loaded certificate and key data
-		var tls_options = TLSOptions.server(server_key_file, server_certs_file)
-		var err = peer.create_server(DEF_PORT, '*', tls_options)
-
-		if err != OK:
-			_set_status("Can't host, address in use.",false)
-			return
-	else:
-		print("Could not load certificate or key files.")
-		return
-		
-	multiplayer.multiplayer_peer = peer
-	#multiplayer.set_multiplayer_peer(peer)
-	host_button.set_disabled(true)
-	join_button.set_disabled(true)
-	print("server live")
-	_set_status("Waiting for player...", true)
-
-
-func _on_join_button_pressed():
-	multiplayer.multiplayer_peer = null
-	var server_certs_file = X509Certificate.new()
-	server_certs_file.load(server_certs_path)
-	if server_certs_file:
-		var tls_options = TLSOptions.client(server_certs_file)
-		var server_endpoint = "wss://" + ip_address + ":" + str(DEF_PORT)
-		print(server_endpoint)
-		var err = peer.create_client(server_endpoint, tls_options)
-		if err != OK:
-			_set_status("Can't create client", false)
-			return
-	else: 
-		print("Could not load certificate")
-		return
-	
-	multiplayer.multiplayer_peer = peer
-	print("client created")
-
-	_set_status("Connecting...", true)
-
-@rpc("authority")
-func request_user_name(): 
-	# called by server on client device
-	rpc_id(1, "receive_username", user_name_label.text)
-	
-@rpc("any_peer")
-func receive_username(username):
-	# called on server side by the client
-	print(username)
-	print(multiplayer.get_remote_sender_id())
-	players[multiplayer.get_remote_sender_id()] = username
-	player_order.append(multiplayer.get_remote_sender_id())
-	if len(players) == 2:
-	# Someone connected, start the game
-		rpc("start_game", player_order[0])
-	
-func _on_offline_button_pressed():
-	_player_connected(-1)

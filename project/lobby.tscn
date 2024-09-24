@@ -1,13 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxmsging1qv8q"]
+[gd_scene load_steps=2 format=3 uid="uid://bxmsging1qv8q"]
 
 [ext_resource type="Script" path="res://logic/lobby.gd" id="1_emrbm"]
-[ext_resource type="PackedScene" uid="uid://cek4r8pfo1uhm" path="res://creepagons.tscn" id="2_6ma0i"]
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_emrbm")
 
 [node name="LobbyPanel" type="Panel" parent="."]
 layout_mode = 0
@@ -15,7 +15,6 @@ offset_left = 30.0
 offset_top = 32.0
 offset_right = 595.0
 offset_bottom = 272.0
-script = ExtResource("1_emrbm")
 
 [node name="StatusOk" type="Label" parent="LobbyPanel"]
 layout_mode = 0
@@ -64,10 +63,6 @@ offset_right = 325.0
 offset_bottom = 111.0
 text = "user name"
 
-[node name="Creepagons" parent="." instance=ExtResource("2_6ma0i")]
-visible = false
-
 [connection signal="pressed" from="LobbyPanel/JoinButton" to="LobbyPanel" method="_on_join_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/HostButton" to="LobbyPanel" method="_on_host_button_pressed"]
 [connection signal="pressed" from="LobbyPanel/OfflineButton" to="LobbyPanel" method="_on_offline_button_pressed"]
-[connection signal="game_finished" from="Creepagons" to="LobbyPanel" method="_end_game"]
