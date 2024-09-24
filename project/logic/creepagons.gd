@@ -42,7 +42,6 @@ func _ready() -> void:
 		my_player_label.text = "playing as unknown"
 
 func set_starting_player(player_id):
-	is_online = len(multiplayer.get_peers()) > 0
 	if multiplayer.get_unique_id() == player_id or player_id == -1:
 		my_player_id = 1
 		my_player_label.text = "playing as white."

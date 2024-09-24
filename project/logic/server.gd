@@ -80,6 +80,7 @@ func _end_game(with_error = "") -> void:
 
 @rpc("any_peer")
 func receive_username(username) -> void:
+	# called by cleant on successful connection to server 
 	players[multiplayer.get_remote_sender_id()] = username
 	player_order.append(multiplayer.get_remote_sender_id())
 	print("Players: %s" % players)
@@ -105,4 +106,3 @@ func _player_disconnected(player_id):
 	print("open sessions")
 	print(sessions)
 
-	

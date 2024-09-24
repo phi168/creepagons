@@ -53,7 +53,7 @@ func join_server():
 	multiplayer.multiplayer_peer = peer
 
 func start_offline_game():
-	start_game(1)
+	start_game(-1)
 
 func remove_game():
 	if game_instance != null:
