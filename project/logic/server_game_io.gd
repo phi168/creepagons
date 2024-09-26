@@ -59,14 +59,14 @@ func request_move_from_bot(session):
 	var os_args = ["ai/cli.py"]
 	for key in game_state:
 		var val = JSON.stringify(game_state[key])
-		print("%s:\n%s" % [key, val])
 		os_args.append("--%s=%s" % [key, val])
 
 	var stdout = []
 	var exit_code = OS.execute("python", os_args, stdout)
 	var pattern = RegEx.new()
-	pattern.compile(r"\[(\d+)\s+(\d+)\]")
-
+	pattern.compile(r"\[\s*(\d+)\s+(\d+)\]")
+	print(os_args)
+	print(stdout)
 	# Search the input string for matches
 	var match = pattern.search(stdout[0])
 	var x = int(match.get_string(1))  # First number
