@@ -8,6 +8,7 @@ var health: int = 0
 var max_health: int = 1
 var health_delta := {1: 0, 2: 0}
 var rendered_text := ""
+var is_in_game : bool
 
 func add_health(delta: int, is_attack: bool):
 	health += delta
@@ -33,6 +34,7 @@ func health_to_string(health_delta: int):
 		return ' ' 
 	else:
 		return str(health_delta)
+		
 func apply_health_delta():
 	# then we diff the rest and assign new _owner
 	# we assume there can only be 2 players

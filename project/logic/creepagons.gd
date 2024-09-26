@@ -118,6 +118,6 @@ func send_next_turn():
 	pass
 
 @rpc
-func send_move(pos_clicked):
+func send_move(_pos_clicked):
 	#server side function
 	pass

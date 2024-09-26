@@ -7,6 +7,7 @@ const GAMENAME := 'Game'
 @onready var host_button = $LobbyPanel/HostButton
 @onready var join_button = $LobbyPanel/JoinButton
 @onready var offline_button = $LobbyPanel/OfflineButton
+@onready var single_player_button = $LobbyPanel/SinglePlayerButton
 @onready var status_ok = $LobbyPanel/StatusOk
 @onready var status_fail = $LobbyPanel/StatusFail
 @onready var user_name_label = $LobbyPanel/UsernNameLabel
@@ -20,13 +21,10 @@ var is_local: bool
 
 func _ready() -> void:
 	parse_cli()
-	var stdout = []
-	var exit_code = OS.execute("python", ["ai/cli.py", "--hello_arg='thore'"], stdout)
-	print(stdout)
-	print(exit_code)
 	host_button.pressed.connect(_on_host_button_pressed)
 	join_button.pressed.connect(_on_join_button_pressed)
 	offline_button.pressed.connect(_on_offline_button_pressed)
+	single_player_button.pressed.connect(_on_single_player_pressed)
 	connect_client_signals()
 	connect_server_signals()
 
@@ -59,7 +57,6 @@ func parse_cli() -> void:
 
 	if args.has('local') or OS.has_feature("editor"):
 		is_local = true
-
 
 
 func connect_server_signals() -> void:
@@ -104,8 +101,23 @@ func _on_join_button_pressed():
 
 func _on_offline_button_pressed():
 	print("Starting offline game...")
+	client.user_name = user_name_label.text
+	client.name = PEERNAME
+	client.game_name = GAMENAME
 	add_child(client)
 	client.start_offline_game()
+	host_button.set_disabled(true)
+	join_button.set_disabled(true)
+
+func _on_single_player_pressed():
+	print("Starting single player game (connecting to bot)...")
+	client.user_name = user_name_label.text
+	client.name = PEERNAME
+	client.game_name = GAMENAME
+	client.is_single_player = true
+	add_child(client, true)
+	client.join_server()
+	_set_status("Connecting to bot...", true)
 	host_button.set_disabled(true)
 	join_button.set_disabled(true)
 

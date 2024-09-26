@@ -8,6 +8,7 @@ var server_certs_path = "res://cert/localhost.crt"
 var ip_address := "localhost"
 var user_name := ""
 var game_name := ""
+var is_single_player := false
 
 
 signal connection_successful
@@ -67,7 +68,7 @@ func remove_game():
 # Callback when connected to the server
 func _connected_ok():
 	print("Connected to server!")
-	rpc_id(1, "receive_username", user_name)
+	rpc_id(1, "receive_username", user_name, is_single_player)
 	emit_signal("connection_successful")
 
 # Callback when the connection to the server fails
@@ -103,11 +104,11 @@ func _end_game(with_error = "") -> void:
 
 
 @rpc
-func receive_username(username) -> void:
+func receive_username(_username) -> void:
 	# server side function
 	pass
 
 @rpc 
-func _player_disconnected(player_id):
+func _player_disconnected(_player_id):
 	# server side function
 	pass

@@ -26,6 +26,7 @@ var num_tiles_p2 = handicap
 var is_game_over = false
 var current_player_id: int = 1
 var player_ids: Array = [1, 2]
+var winner
 
 @onready var tilemap =  preload("res://tile_map.tscn").instantiate()
 
@@ -38,7 +39,10 @@ func _ready():
 	for _i in range(width): #horizontal
 		var col = []
 		for _j in range(height): #vertical
-			col.append(HexPieceLogic.new())
+			var hex = HexPieceLogic.new()
+			var is_in_game = tilemap.is_in_game(Vector2i(_i, _j))
+			hex.is_in_game = is_in_game
+			col.append(hex)
 		grid.append(col)
 
 	get_base_deltas()
@@ -53,9 +57,9 @@ func get_base_deltas():
 	# Iterate over each hex in the grid
 	for x in range(width):
 		for y in range(height):
-			if not tilemap.is_in_game(Vector2i(x,y)):
-				continue
 			var hex = grid[x][y]
+			if not hex.is_in_game:
+				continue
 			var adj_occupied = calculate_adjacent_occupied(x, y)
 			
 			# Calculate deltas for both players
@@ -71,9 +75,9 @@ func update_game_state():
 	num_tiles_p2 = handicap
 	for x in range(width):
 		for y in range(height):
-			if not tilemap.is_in_game(Vector2i(x,y)):
-				continue
 			var hex = grid[x][y]
+			if not hex.is_in_game:
+				continue
 			hex.apply_health_delta()
 			if hex._owner != 0:
 				num_occupied_tiles += 1
@@ -84,8 +88,9 @@ func update_game_state():
 	
 	if num_occupied_tiles >= max_occupied_tiles:
 		var num_tiles = [num_tiles_p1, num_tiles_p2]
-		var winner = num_tiles.find(num_tiles.max()) + 1
+		winner = num_tiles.find(num_tiles.max()) + 1
 		is_game_over = true
+		current_player_id = -1
 		print("player %s wins" % winner)
 		emit_signal("game_over", winner)
 	

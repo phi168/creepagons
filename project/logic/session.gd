@@ -6,11 +6,10 @@ class_name Session
 
 var session_id: String
 var player1_peer_id: int
-var player2_peer_id: int
+var player2_peer_id: int # might be the bot id
+var is_against_bot: bool
 
-var GameEngine = preload("res://logic/game_engine.gd")
 var game_instance: Node = null
-
 
 # Signal to indicate that the session should be ended
 signal session_ended(session_id)
@@ -35,3 +34,21 @@ func end_session():
 	if game_instance != null:
 		game_instance.queue_free()  
 		game_instance = null
+
+func get_game_state() -> Dictionary:
+	var properties = ['_owner', 'health', 'health_delta', 'is_in_game']
+	var game_state = {}
+	for property in properties:
+		game_state[property] = get_game_state_by_property(property)
+	game_state['current_player_id'] = game_instance.current_player_id
+	return game_state
+	
+func get_game_state_by_property(property):
+	var grid = []
+	for x in range(game_instance.width):
+		var col = []
+		for y in range(game_instance.height):
+			var hex = game_instance.grid[x][y]
+			col.append(hex.get(property))
+		grid.append(col)
+	return grid
