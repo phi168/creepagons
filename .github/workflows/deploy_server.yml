@@ -42,6 +42,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF' 
           chmod +x /usr/local/bin/server.x86_64
+          cd /usr/local/bin
           nohup /usr/local/bin/server.x86_64 --headless &> /usr/local/bin/output.log &
           echo "process restarted"
           EOF
