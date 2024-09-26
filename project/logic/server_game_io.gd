@@ -65,8 +65,6 @@ func request_move_from_bot(session):
 	var exit_code = OS.execute("python", os_args, stdout)
 	var pattern = RegEx.new()
 	pattern.compile(r"\[\s*(\d+)\s+(\d+)\]")
-	print(os_args)
-	print(stdout)
 	# Search the input string for matches
 	var match = pattern.search(stdout[0])
 	var x = int(match.get_string(1))  # First number

@@ -37,6 +37,7 @@ jobs:
       - name: Move files over
         run: |
           scp -r -o StrictHostKeyChecking=no ./build/linux/*   rmaptbu@34.69.180.97:/usr/local/bin/
+          scp -r -o StrictHostKeyChecking=no ./project/ai/*   rmaptbu@34.69.180.97:/usr/local/bin/ai/
       - name: Start server
         run: |
           ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF' 
