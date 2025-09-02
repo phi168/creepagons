@@ -36,8 +36,10 @@ jobs:
       # Copy the subfolder to the GCE instance
       - name: Move files over
         run: |
-          scp -r -o StrictHostKeyChecking=no ./build/linux/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin/
+          scp -r -o StrictHostKeyChecking=no ./build/linux/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/build/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo mv /tmp/build/* /usr/local/bin/"
           scp -r -o StrictHostKeyChecking=no ./project/ai/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin/ai/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo mv /tmp/build/* /usr/local/bin/ai/"
       - name: Start server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
