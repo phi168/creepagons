@@ -23,7 +23,7 @@ jobs:
       
       - name: Kill old process if necessary
         run: |
-          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           if pgrep server.x86_64 > /dev/null
           then
             echo "Stopping running process..."
@@ -36,11 +36,11 @@ jobs:
       # Copy the subfolder to the GCE instance
       - name: Move files over
         run: |
-          scp -r -o StrictHostKeyChecking=no ./build/linux/*   rmaptbu@34.69.180.97:/usr/local/bin/
-          scp -r -o StrictHostKeyChecking=no ./project/ai/*   rmaptbu@34.69.180.97:/usr/local/bin/ai/
+          scp -r -o StrictHostKeyChecking=no ./build/linux/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin/
+          scp -r -o StrictHostKeyChecking=no ./project/ai/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin/ai/
       - name: Start server
         run: |
-          ssh -o StrictHostKeyChecking=no rmaptbu@34.69.180.97 << 'EOF' 
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
           chmod +x /usr/local/bin/server.x86_64
           cd /usr/local/bin
           nohup /usr/local/bin/server.x86_64 --headless &> /usr/local/bin/output.log &
