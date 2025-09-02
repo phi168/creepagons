@@ -1,34 +1,20 @@
 [gd_scene load_steps=5 format=3 uid="uid://ytcphuftxiuo"]
 
 [ext_resource type="Texture2D" uid="uid://ymhpqx8i3bgt" path="res://img/tiles.png" id="1_tclc0"]
-[ext_resource type="Script" path="res://logic/tile_map_controller.gd" id="2_jdg07"]
+[ext_resource type="Script" uid="uid://bqa66ahe6tci" path="res://logic/tile_map_controller.gd" id="2_jdg07"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_regym"]
 texture = ExtResource("1_tclc0")
 texture_region_size = Vector2i(70, 58)
 0:0/next_alternative_id = 2
 0:0/0 = 0
-0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/0/physics_layer_0/angular_velocity = 0.0
 1:0/next_alternative_id = 2
 1:0/0 = 0
-1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:0/0/physics_layer_0/angular_velocity = 0.0
 1:1/0 = 0
-1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:1/0/physics_layer_0/angular_velocity = 0.0
 2:0/0 = 0
-2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:0/0/physics_layer_0/angular_velocity = 0.0
 2:1/0 = 0
-2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:1/0/physics_layer_0/angular_velocity = 0.0
 1:2/0 = 0
-1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:2/0/physics_layer_0/angular_velocity = 0.0
 2:2/0 = 0
-2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:2/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_aambc"]
 tile_shape = 3

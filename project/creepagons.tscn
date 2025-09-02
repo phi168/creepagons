@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://cek4r8pfo1uhm"]
 
-[ext_resource type="Script" path="res://logic/creepagons.gd" id="1_7w21x"]
+[ext_resource type="Script" uid="uid://bm275w3xv222k" path="res://logic/creepagons.gd" id="1_7w21x"]
 [ext_resource type="PackedScene" uid="uid://ytcphuftxiuo" path="res://tile_map.tscn" id="1_c525g"]
 [ext_resource type="PackedScene" uid="uid://dv1rqj0h7gqfy" path="res://game_engine.tscn" id="2_p5iws"]
-[ext_resource type="Script" path="res://logic/hex_piece_logic.gd" id="4_7164l"]
+[ext_resource type="Script" uid="uid://bt2m8vgfobhd0" path="res://logic/hex_piece_logic.gd" id="4_7164l"]
 [ext_resource type="PackedScene" uid="uid://cfmefnc3fyvf3" path="res://tutorial.tscn" id="5_hrby2"]
 
 [node name="Creepagons" type="Node2D"]
