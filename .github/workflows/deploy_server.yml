@@ -38,8 +38,8 @@ jobs:
         run: |
           scp -r -o StrictHostKeyChecking=no ./build/linux/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/build/
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo mv /tmp/build/* /usr/local/bin/"
-          scp -r -o StrictHostKeyChecking=no ./project/ai/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin/ai/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo mkdir -p /usr/local/bin/ai && sudo mv /tmp/build/* /usr/local/bin/ai/"
+          scp -r -o StrictHostKeyChecking=no ./project/ai/*   ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/ai/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo mkdir -p /usr/local/bin/ai && sudo mv /tmp/ai/* /usr/local/bin/ai/"
       - name: Start server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
