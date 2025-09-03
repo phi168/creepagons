@@ -45,6 +45,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF' 
           chmod +x /usr/local/bin/server.x86_64
           cd /usr/local/bin
-          sudo nohup /usr/local/bin/server.x86_64 --headless &> ~/server_output.log &
+          nohup /usr/local/bin/server.x86_64 --headless &> ~/server_output.log &
           echo "process restarted"
           EOF

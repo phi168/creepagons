@@ -1,7 +1,7 @@
 # Server.gd
 extends Node
 
-const DEF_PORT = 8080
+const DEF_PORT = 3000
 const PROTO_NAME = "ludus"
 const BOT_ID_BASE := 990000000000
 var peer := WebSocketMultiplayerPeer.new()
@@ -35,19 +35,24 @@ func _ready():
 
 # Starts the server
 func start_server():
-	var server_certs_file = X509Certificate.new()
-	server_certs_file.load(server_certs_path)
-	var server_key_file = CryptoKey.new()
-	server_key_file.load(server_key_path, false)
+	# var server_certs_file = X509Certificate.new()
+	# server_certs_file.load(server_certs_path)
+	# var server_key_file = CryptoKey.new()
+	# server_key_file.load(server_key_path, false)
+	# var err
+	# if server_certs_file and server_key_file:
+	# 	var tls_options = TLSOptions.server(server_key_file, server_certs_file)
+	# 	err = peer.create_server(DEF_PORT, '*', tls_options)
+	# 	if err != OK:
+	# 		print("Can't host, address in use.")
+	# 		return
+	# else:
+	# 	print("Could not load certificate or key files.")
+	# 	return
 	var err
-	if server_certs_file and server_key_file:
-		var tls_options = TLSOptions.server(server_key_file, server_certs_file)
-		err = peer.create_server(DEF_PORT, '*', tls_options)
-		if err != OK:
-			print("Can't host, address in use.")
-			return
-	else:
-		print("Could not load certificate or key files.")
+	err = peer.create_server(DEF_PORT)
+	if err != OK:
+		print("Can't host, address in use.")
 		return
 
 	multiplayer.multiplayer_peer = peer

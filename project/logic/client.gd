@@ -38,8 +38,8 @@ func join_server():
 		var tls_options: TLSOptions
 		if server_certs_path == "res://cert/localhost.crt":
 			tls_options = TLSOptions.client_unsafe(server_certs_file)
-		else:
-			tls_options = TLSOptions.client(server_certs_file)
+		# else:
+		# 	tls_options = TLSOptions.client(server_certs_file)
 
 		var server_endpoint = "wss://" + ip_address + ":" + str(DEF_PORT)
 		print("Connecting to server at: ", server_endpoint)

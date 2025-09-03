@@ -35,14 +35,10 @@ func _ready() -> void:
 		# Running in exported mode, use production IP
 		client.ip_address = "creepagonsserver.buecking.me	"
 		# if client, we need to locally load the certificate
-		client.server_key_path = "res://cert/fullchain1.pem"
+		client.server_certs_path = "res://cert/fullchain1.pem"
 
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
-		print("using server's certificates")
-		if not is_local:
-			server.server_certs_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/fullchain.pem"
-			server.server_key_path = "/etc/letsencrypt/live/creepagonsserver.buecking.me/privkey.pem"
 		_on_host_button_pressed.call_deferred()
 
 func parse_cli() -> void:
