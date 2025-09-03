@@ -30,11 +30,11 @@ jobs:
         script: |
           # Generate checksums of current and new config
           CURRENT_SUM=$(sudo sha256sum /etc/nginx/sites-available/game-server | cut -d' ' -f1)
-          NEW_SUM=$(sha256sum /tmp/server.conf| cut -d' ' -f1)
+          NEW_SUM=$(sha256sum /tmp/sites-available/server.conf| cut -d' ' -f1)
           
           if [ "$CURRENT_SUM" != "$NEW_SUM" ]; then
             echo "Config changed, deploying..."
-            sudo cp /tmp/server.conf /etc/nginx/sites-available/game-server
+            sudo cp /tmp/sites-available/server.conf /etc/nginx/sites-available/game-server
             sudo ln -sf /etc/nginx/sites-available/creepagons.conf /etc/nginx/sites-enabled/
             
             if sudo nginx -t; then
