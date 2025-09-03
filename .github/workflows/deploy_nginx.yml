@@ -35,7 +35,7 @@ jobs:
           if [ "$CURRENT_SUM" != "$NEW_SUM" ]; then
             echo "Config changed, deploying..."
             sudo cp /tmp/nginx/sites-available/server.conf /etc/nginx/sites-available/game-server
-            sudo ln -sf /etc/nginx/sites-available/creepagons.conf /etc/nginx/sites-enabled/
+            sudo ln -sf /etc/nginx/sites-available/game-server /etc/nginx/sites-enabled/
             
             if sudo nginx -t; then
               sudo systemctl reload nginx
