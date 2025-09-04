@@ -165,4 +165,3 @@ func _player_disconnected(player_id):
 
 	print("open sessions")
 	print(sessions)
-

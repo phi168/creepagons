@@ -1,7 +1,7 @@
 # Client.gd
 extends Node
 
-const DEF_PORT = 8080
+const DEF_PORT = 443
 const PROTO_NAME = "ludus"
 var peer := WebSocketMultiplayerPeer.new()
 var server_certs_path = "res://cert/localhost.crt"
